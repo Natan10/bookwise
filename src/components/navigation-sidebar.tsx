@@ -1,15 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import bookHeart from "@/assets/icons/book-heart.svg";
 import Link from "next/link";
-import { Binoculars, ChartLineUp, SignOut, User } from "@phosphor-icons/react";
 import { ElementType } from "react";
+import { Binoculars, ChartLineUp, SignOut, User } from "@phosphor-icons/react";
+import bookHeart from "@/assets/icons/book-heart.svg";
 
 export function NavigationSidebar() {
   return (
-    <aside className="w-[232px] flex">
-      <nav className="flex flex-col pt-10 px-12 pb-6 bg-gray-700 rounded-xl shadow-xl">
+    <aside className="flex p-5">
+      <nav className="w-[232px] flex flex-col pt-10 px-12 pb-6 bg-gray-700 rounded-xl shadow-xl">
         <div className="flex items-center gap-2">
           <Image src={bookHeart} alt="bookHeart" width={24} height={24} />
           <h1 className="font-bold text-xl text-transparent bg-clip-text bg-gradient-horizontal">
