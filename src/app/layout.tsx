@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${nunito.variable}`}>{children}</body>
+      <body className={`${nunito.variable} h-screen`}>{children}</body>
     </html>
   );
 }
