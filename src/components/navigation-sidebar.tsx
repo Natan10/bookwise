@@ -30,22 +30,6 @@ export function NavigationSidebar() {
               <SignOut size={20} className="text-green-100" />
             </button>
           </div>
-          {/* <div className="flex items-center gap-3">
-            <div className="relative flex items-center justify-center size-9 bg-gradient-vertical rounded-full">
-              <Image
-                src={"https://github.com/natan10.png"}
-                alt="perfil"
-                width={32}
-                height={32}
-                className="rounded-full"
-                style={{ objectFit: "contain" }}
-              />
-            </div>
-            <span className="text-gray-200 text-sm">Natan</span>
-            <button>
-              <SignOut size={20} className="text-[#F75A68]" />
-            </button>
-          </div> */}
         </div>
       </nav>
     </aside>
