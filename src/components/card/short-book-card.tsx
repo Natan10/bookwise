@@ -6,7 +6,7 @@ import { Stars } from "../stars";
 
 export function ShortBookCard() {
   return (
-    <div className="w-[308px] h-[130px] rounded-lg bg-gray-600">
+    <div className="w-[308px] h-[130px] rounded-lg bg-gray-600 border hover:border-gray-600 transition-all">
       <div className="px-5 py-[18px] grid grid-cols-[auto_1fr_1fr] gap-6">
         <div className="rounded">
           <Image
