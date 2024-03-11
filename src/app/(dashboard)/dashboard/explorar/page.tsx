@@ -5,6 +5,7 @@ import { Tag } from "@/components/tag";
 import { Binoculars } from "@phosphor-icons/react";
 import { books } from "./seed";
 import { ShortBookCard } from "@/components/card/short-book-card";
+import { getRandomNumber } from "@/utils/randomRate";
 
 const tags = [
   "Tudo",
@@ -50,10 +51,4 @@ export default function Explorar() {
       </div>
     </section>
   );
-}
-
-function getRandomNumber(min: number, max: number) {
-  const randomDecimal = Math.random();
-  const randomNumber = Math.floor(randomDecimal * (max - min + 1)) + min;
-  return randomNumber;
 }
