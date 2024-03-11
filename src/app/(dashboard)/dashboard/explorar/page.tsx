@@ -6,6 +6,7 @@ import { Binoculars } from "@phosphor-icons/react";
 import { books } from "./seed";
 import { ShortBookCard } from "@/components/card/short-book-card";
 import { getRandomNumber } from "@/utils/randomRate";
+import * as Comment from "@/components/comment";
 
 const tags = [
   "Tudo",
@@ -49,6 +50,19 @@ export default function Explorar() {
           );
         })}
       </div>
+
+      <Comment.CommentRoot>
+        <Comment.CommentClose />
+        <Comment.CommentBookCard />
+        <Comment.CommentAvaliationTrigger />
+
+        <div className="space-y-3">
+          <Comment.CommentAvaliationInput />
+          <Comment.CommentAvaliationCard />
+          <Comment.CommentAvaliationCard />
+          <Comment.CommentAvaliationCard />
+        </div>
+      </Comment.CommentRoot>
     </section>
   );
 }
