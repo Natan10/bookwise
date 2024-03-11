@@ -7,18 +7,43 @@ function AvatarRoot({ children }: { children: ReactNode }) {
 }
 
 type AvatarProps = {
-  profileName: string;
+  type?: "sm" | "md" | "lg";
   avatarUrl: string;
 };
 
-function AvatarPhoto({ avatarUrl }: AvatarProps) {
+function AvatarPhoto({ avatarUrl, type = "md" }: AvatarProps) {
+  function getImageSize() {
+    if (type === "sm") {
+      return 30;
+    } else if (type === "md") {
+      return 38;
+    } else {
+      return 78;
+    }
+  }
+
+  function getContainerSize() {
+    if (type === "sm") {
+      return 8;
+    } else if (type === "md") {
+      return 10;
+    } else {
+      return 20;
+    }
+  }
+
+  const size = getImageSize();
+  const containerSize = getContainerSize();
+
   return (
-    <div className="flex justify-center items-center size-10 rounded-full bg-gradient-vertical">
+    <div
+      className={`flex justify-center items-center size-${containerSize} rounded-full bg-gradient-vertical`}
+    >
       <Image
         src={avatarUrl}
         alt="avatar-profile"
-        width={38}
-        height={38}
+        width={size}
+        height={size}
         className="rounded-full"
         style={{ objectFit: "contain" }}
       />

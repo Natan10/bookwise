@@ -4,15 +4,12 @@ import Image from "next/image";
 import { Stars } from "../stars";
 import * as Avatar from "@/components/avatar";
 
-export function CardAvatar() {
+export function AvatarCard() {
   return (
     <div className="min-w-[608px] h-[280px] p-6 rounded-lg bg-gray-600 transition-all">
       <div className="flex justify-between items-start">
         <Avatar.AvatarRoot>
-          <Avatar.AvatarPhoto
-            avatarUrl="https://github.com/natan10.png"
-            profileName="Natan"
-          />
+          <Avatar.AvatarPhoto avatarUrl="https://github.com/natan10.png" />
           <Avatar.AvatarDescription name="Natan" description="Hoje" />
         </Avatar.AvatarRoot>
         <Stars rate={2} />

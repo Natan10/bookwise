@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { CaretRight, ChartLineUp } from "@phosphor-icons/react";
 import { BigBookCard } from "@/components/card/big-book-card";
-import { CardAvatar } from "@/components/card/card-avatar";
+import { AvatarCard } from "@/components/card/avatar-card";
 import { books } from "./explorar/seed";
 import { ShortBookCard } from "@/components/card/short-book-card";
 import { getRandomNumber } from "@/utils/randomRate";
@@ -34,8 +34,8 @@ export default function Dashboard() {
           <div className="mt-10 space-y-4">
             <p className="text-sm text-gray-100">Sua última leitura</p>
             <div className="space-y-3">
-              <CardAvatar />
-              <CardAvatar />
+              <AvatarCard />
+              <AvatarCard />
             </div>
           </div>
         </div>
