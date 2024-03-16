@@ -17,7 +17,7 @@ export function ShortBookCard({
   rate,
 }: ShortBookCardProps) {
   return (
-    <div className="min-w-[308px] h-[130px] rounded-lg bg-gray-600 border hover:border-gray-600 transition-all">
+    <div className="min-w-[308px] h-[130px] rounded-lg bg-gray-600 border border-gray-600 hover:border-gray-500 transition-all">
       <div className="px-5 py-[18px] grid grid-cols-[auto_1fr_1fr] gap-6">
         <div className="rounded">
           <Image

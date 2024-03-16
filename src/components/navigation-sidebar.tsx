@@ -25,7 +25,9 @@ export function NavigationSidebar() {
 
         <div>
           <div className="mt-auto flex items-center gap-3">
-            <span className="font-bold text-base">Fazer login</span>
+            <span className="font-bold text-base text-gray-200">
+              Fazer login
+            </span>
             <button>
               <SignOut size={20} className="text-green-100" />
             </button>

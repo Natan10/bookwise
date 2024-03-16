@@ -5,7 +5,7 @@ import { Stars } from "../stars";
 
 export function BigBookCard() {
   return (
-    <div className="h-[192px] rounded-lg bg-gray-600 hover:bg-gray-500 border hover:border-gray-600 transition-all">
+    <div className="h-[192px] rounded-lg bg-gray-600 hover:bg-gray-500/75 border border-gray-600 hover:border-gray-500 transition-all">
       <div className="px-6 py-5 grid grid-cols-[auto_1fr_1fr] gap-6">
         <div className="rounded">
           <Image
