@@ -1,0 +1,27 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1710619760917,
+      "tag": "0000_soft_ravenous",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1710626867634,
+      "tag": "0001_cute_red_wolf",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1710630219980,
+      "tag": "0002_sticky_green_goblin",
+      "breakpoints": true
+    }
+  ]
+}
