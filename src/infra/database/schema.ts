@@ -10,32 +10,33 @@ import {
 } from "drizzle-orm/pg-core";
 
 export const categories = pgTable("categories", {
-  id: serial("id").primaryKey(),
+  id: serial("id").primaryKey().unique(),
   type: text("type").notNull(),
 });
 
 export const books = pgTable("books", {
-  id: serial("id").primaryKey(),
+  id: serial("id").primaryKey().unique(),
   author: char("author", { length: 256 }).notNull(),
   title: text("title").notNull(),
+  coverImage: text("cover_image"),
   numOfPages: integer("num_of_pages").default(0),
   description: text("description"),
   createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at"),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 export const profiles = pgTable("profiles", {
-  id: serial("id").primaryKey(),
-  email: text("email").notNull(),
+  id: serial("id").primaryKey().unique(),
+  email: text("email").notNull().unique(),
   username: text("username"),
   avatar: text("avatar"),
   password: text("password"),
   createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at"),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 export const ratings = pgTable("ratings", {
-  id: serial("id").primaryKey(),
+  id: serial("id").primaryKey().unique(),
   profileId: integer("profile_id")
     .references(() => profiles.id, { onDelete: "cascade" })
     .notNull(),
@@ -43,11 +44,11 @@ export const ratings = pgTable("ratings", {
     .references(() => books.id, { onDelete: "cascade" })
     .notNull(),
   createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at"),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 export const comments = pgTable("commments", {
-  id: serial("id").primaryKey(),
+  id: serial("id").primaryKey().unique(),
   comment: text("comment", {}).notNull(),
   ratingId: integer("rating_id")
     .references(() => ratings.id, { onDelete: "cascade" })
@@ -55,6 +56,8 @@ export const comments = pgTable("commments", {
   profileId: integer("profile_id")
     .references(() => profiles.id, { onDelete: "cascade" })
     .notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 export const categoriesRelations = relations(categories, ({ many }) => {
