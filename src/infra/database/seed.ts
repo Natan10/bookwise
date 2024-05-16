@@ -76,6 +76,7 @@ const books = [
 
 async function seedDb() {
   console.log("Running seeds...");
+
   const booksInserts = books.map(async (book) => {
     return db.insert(schema.books).values({
       author: book.author,

@@ -6,7 +6,7 @@ import * as Avatar from "@/components/avatar";
 
 export function AvatarCard() {
   return (
-    <div className="min-w-[608px] h-[280px] p-6 rounded-lg bg-gray-600 transition-all">
+    <div className="h-[280px] p-6 rounded-lg bg-gray-600 transition-all">
       <div className="flex justify-between items-start">
         <Avatar.AvatarRoot>
           <Avatar.AvatarPhoto avatarUrl="https://github.com/natan10.png" />

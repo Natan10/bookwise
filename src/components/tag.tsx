@@ -19,7 +19,7 @@ export function Tag({ title, isSelected = false }: TagProps) {
       <input
         id="type"
         type="checkbox"
-        checked={isSelected}
+        defaultChecked={isSelected}
         className="hidden"
         value={title}
       />

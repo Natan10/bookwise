@@ -19,7 +19,7 @@ export const books = pgTable("books", {
   author: char("author", { length: 256 }).notNull(),
   title: text("title").notNull(),
   coverImage: text("cover_image"),
-  numOfPages: integer("num_of_pages").default(0),
+  numOfPages: integer("num_of_pages").notNull().default(0),
   description: text("description"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -37,6 +37,7 @@ export const profiles = pgTable("profiles", {
 
 export const ratings = pgTable("ratings", {
   id: serial("id").primaryKey().unique(),
+  rate: integer("rate").notNull(),
   profileId: integer("profile_id")
     .references(() => profiles.id, { onDelete: "cascade" })
     .notNull(),
