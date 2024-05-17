@@ -12,8 +12,3 @@ export default {
     database: process.env.POSTGRES_DATABASE!,
   },
 } satisfies Config;
-
-/*
-generate migration -> npm drizzle-kit generate:pg
-
-*/
