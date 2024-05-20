@@ -11,7 +11,7 @@ import {
 
 export const categories = pgTable("categories", {
   id: serial("id").primaryKey().unique(),
-  type: text("type").notNull(),
+  type: text("type").unique().notNull(),
 });
 
 export const books = pgTable("books", {
@@ -57,6 +57,9 @@ export const comments = pgTable("commments", {
   profileId: integer("profile_id")
     .references(() => profiles.id, { onDelete: "cascade" })
     .notNull(),
+  bookId: integer("book_id")
+    .references(() => books.id, { onDelete: "cascade" })
+    .notNull(),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -71,6 +74,7 @@ export const booksRelations = relations(books, ({ many }) => {
   return {
     categories: many(categories_to_books),
     ratings: many(ratings),
+    comments: many(comments),
   };
 });
 
@@ -124,6 +128,10 @@ export const commentsRelations = relations(comments, ({ one }) => {
     rating: one(ratings, {
       fields: [comments.ratingId],
       references: [ratings.id],
+    }),
+    book: one(books, {
+      fields: [comments.bookId],
+      references: [books.id],
     }),
   };
 });
