@@ -35,9 +35,9 @@ export const profiles = pgTable("profiles", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-export const ratings = pgTable("ratings", {
+export const comments = pgTable("commments", {
   id: serial("id").primaryKey().unique(),
-  rate: integer("rate").notNull(),
+  comment: text("comment", {}).notNull(),
   profileId: integer("profile_id")
     .references(() => profiles.id, { onDelete: "cascade" })
     .notNull(),
@@ -48,17 +48,16 @@ export const ratings = pgTable("ratings", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-export const comments = pgTable("commments", {
+export const ratings = pgTable("ratings", {
   id: serial("id").primaryKey().unique(),
-  comment: text("comment", {}).notNull(),
-  ratingId: integer("rating_id")
-    .references(() => ratings.id, { onDelete: "cascade" })
-    .notNull(),
+  rate: integer("rate").notNull(),
   profileId: integer("profile_id")
     .references(() => profiles.id, { onDelete: "cascade" })
     .notNull(),
   bookId: integer("book_id")
-    .references(() => books.id, { onDelete: "cascade" })
+    .references(() => books.id, {
+      onDelete: "cascade",
+    })
     .notNull(),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -109,9 +108,8 @@ export const categoriesToBooksRelations = relations(
   }
 );
 
-export const ratingsRelations = relations(ratings, ({ many, one }) => {
+export const ratingsRelations = relations(ratings, ({ one }) => {
   return {
-    comments: many(comments),
     profile: one(profiles, {
       references: [profiles.id],
       fields: [ratings.profileId],
@@ -123,12 +121,8 @@ export const ratingsRelations = relations(ratings, ({ many, one }) => {
   };
 });
 
-export const commentsRelations = relations(comments, ({ one }) => {
+export const commentsRelations = relations(comments, ({ one, many }) => {
   return {
-    rating: one(ratings, {
-      fields: [comments.ratingId],
-      references: [ratings.id],
-    }),
     book: one(books, {
       fields: [comments.bookId],
       references: [books.id],
