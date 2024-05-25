@@ -1,9 +1,11 @@
 import { Explorer } from "./components/explorer";
-import { getAllBooksWithRatings } from "@/data/queries/books-queries";
-import { BookWithRate } from "./dtos/book-rate-dto";
+import { db } from "@/infra/database/client";
 
 export default async function Explorar() {
-  const books = await getAllBooksWithRatings();
+  const categories = await getCategories();
+  return <Explorer categories={categories} />;
+}
 
-  return <Explorer books={books as BookWithRate[]} />;
+async function getCategories() {
+  return await db.query.categories.findMany();
 }
