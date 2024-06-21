@@ -1,33 +1,19 @@
 {
-  "version": "5",
-  "dialect": "pg",
+  "version": "6",
+  "dialect": "postgresql",
   "entries": [
     {
       "idx": 0,
-      "version": "5",
-      "when": 1710619760917,
-      "tag": "0000_soft_ravenous",
+      "version": "6",
+      "when": 1716664376945,
+      "tag": "0000_youthful_luke_cage",
       "breakpoints": true
     },
     {
       "idx": 1,
-      "version": "5",
-      "when": 1710626867634,
-      "tag": "0001_cute_red_wolf",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1710630219980,
-      "tag": "0002_sticky_green_goblin",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1710643677872,
-      "tag": "0003_glamorous_marvel_zombies",
+      "version": "6",
+      "when": 1717839205991,
+      "tag": "0001_loud_gamma_corps",
       "breakpoints": true
     }
   ]

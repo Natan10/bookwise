@@ -227,12 +227,16 @@ async function seedDb() {
   //   });
   // });
 
+  // return Promise.all(booksInserts);
+
   // const categoriesInserts = categories.map(async (category) => {
   //   return await db.insert(schema.categories).values({
   //     id: category.id,
   //     type: category.type,
   //   });
   // });
+
+  // return Promise.all(categoriesInserts);
 
   const categoryAndBookRelationInserts = categories.map(async (category) => {
     const bookIds = category.bookIds;
@@ -249,4 +253,7 @@ async function seedDb() {
 
 seedDb()
   .then(() => console.log("Registros criados com sucesso!"))
-  .catch(() => "Erro ao popular database!");
+  .catch(() => "Erro ao popular database!")
+  .finally(() => {
+    return;
+  });

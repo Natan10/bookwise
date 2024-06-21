@@ -10,12 +10,12 @@ import {
 } from "drizzle-orm/pg-core";
 
 export const categories = pgTable("categories", {
-  id: serial("id").primaryKey().unique(),
+  id: serial("id").primaryKey(),
   type: text("type").unique().notNull(),
 });
 
 export const books = pgTable("books", {
-  id: serial("id").primaryKey().unique(),
+  id: serial("id").primaryKey(),
   author: char("author", { length: 256 }).notNull(),
   title: text("title").notNull(),
   coverImage: text("cover_image"),
@@ -26,7 +26,7 @@ export const books = pgTable("books", {
 });
 
 export const profiles = pgTable("profiles", {
-  id: serial("id").primaryKey().unique(),
+  id: serial("id").primaryKey(),
   email: text("email").notNull().unique(),
   username: text("username"),
   avatar: text("avatar"),
@@ -36,7 +36,7 @@ export const profiles = pgTable("profiles", {
 });
 
 export const comments = pgTable("commments", {
-  id: serial("id").primaryKey().unique(),
+  id: serial("id").primaryKey(),
   comment: text("comment", {}).notNull(),
   profileId: integer("profile_id")
     .references(() => profiles.id, { onDelete: "cascade" })
@@ -48,8 +48,22 @@ export const comments = pgTable("commments", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+export const avaliations = pgTable("avaliations", {
+  id: serial("id").primaryKey(),
+  comment: text("comment", {}).notNull(),
+  rate: integer("rate").notNull(),
+  profileId: integer("profile_id")
+    .references(() => profiles.id, { onDelete: "cascade" })
+    .notNull(),
+  bookId: integer("book_id")
+    .references(() => books.id, { onDelete: "cascade" })
+    .notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 export const ratings = pgTable("ratings", {
-  id: serial("id").primaryKey().unique(),
+  id: serial("id").primaryKey(),
   rate: integer("rate").notNull(),
   profileId: integer("profile_id")
     .references(() => profiles.id, { onDelete: "cascade" })
@@ -74,6 +88,7 @@ export const booksRelations = relations(books, ({ many }) => {
     categories: many(categories_to_books),
     ratings: many(ratings),
     comments: many(comments),
+    avaliations: many(avaliations),
   };
 });
 
@@ -121,11 +136,24 @@ export const ratingsRelations = relations(ratings, ({ one }) => {
   };
 });
 
-export const commentsRelations = relations(comments, ({ one, many }) => {
+export const commentsRelations = relations(comments, ({ one }) => {
   return {
     book: one(books, {
       fields: [comments.bookId],
       references: [books.id],
+    }),
+  };
+});
+
+export const avaliationsRelations = relations(avaliations, ({ one }) => {
+  return {
+    book: one(books, {
+      fields: [avaliations.bookId],
+      references: [books.id],
+    }),
+    profile: one(profiles, {
+      fields: [avaliations.profileId],
+      references: [profiles.id],
     }),
   };
 });

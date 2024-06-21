@@ -1,10 +1,10 @@
 {
-  "id": "81594f85-68c4-4cb2-b0da-3820072aea53",
+  "id": "c44cd854-e055-441d-8fe4-2719ae439879",
   "prevId": "00000000-0000-0000-0000-000000000000",
-  "version": "5",
-  "dialect": "pg",
+  "version": "6",
+  "dialect": "postgresql",
   "tables": {
-    "books": {
+    "public.books": {
       "name": "books",
       "schema": "",
       "columns": {
@@ -26,11 +26,17 @@
           "primaryKey": false,
           "notNull": true
         },
+        "cover_image": {
+          "name": "cover_image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "num_of_pages": {
           "name": "num_of_pages",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": 0
         },
         "description": {
@@ -50,23 +56,16 @@
           "name": "updated_at",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "now()"
         }
       },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "books_id_unique": {
-          "name": "books_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "id"
-          ]
-        }
-      }
+      "uniqueConstraints": {}
     },
-    "categories": {
+    "public.categories": {
       "name": "categories",
       "schema": "",
       "columns": {
@@ -87,16 +86,16 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "categories_id_unique": {
-          "name": "categories_id_unique",
+        "categories_type_unique": {
+          "name": "categories_type_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "id"
+            "type"
           ]
         }
       }
     },
-    "categories_to_books": {
+    "public.categories_to_books": {
       "name": "categories_to_books",
       "schema": "",
       "columns": {
@@ -153,7 +152,7 @@
       },
       "uniqueConstraints": {}
     },
-    "commments": {
+    "public.commments": {
       "name": "commments",
       "schema": "",
       "columns": {
@@ -169,34 +168,35 @@
           "primaryKey": false,
           "notNull": true
         },
-        "rating_id": {
-          "name": "rating_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
         "profile_id": {
           "name": "profile_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
+        },
+        "book_id": {
+          "name": "book_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "commments_rating_id_ratings_id_fk": {
-          "name": "commments_rating_id_ratings_id_fk",
-          "tableFrom": "commments",
-          "tableTo": "ratings",
-          "columnsFrom": [
-            "rating_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
         "commments_profile_id_profiles_id_fk": {
           "name": "commments_profile_id_profiles_id_fk",
           "tableFrom": "commments",
@@ -209,20 +209,25 @@
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "commments_book_id_books_id_fk": {
+          "name": "commments_book_id_books_id_fk",
+          "tableFrom": "commments",
+          "tableTo": "books",
+          "columnsFrom": [
+            "book_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "commments_id_unique": {
-          "name": "commments_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "id"
-          ]
-        }
-      }
+      "uniqueConstraints": {}
     },
-    "profiles": {
+    "public.profiles": {
       "name": "profiles",
       "schema": "",
       "columns": {
@@ -267,20 +272,14 @@
           "name": "updated_at",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "now()"
         }
       },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "profiles_id_unique": {
-          "name": "profiles_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "id"
-          ]
-        },
         "profiles_email_unique": {
           "name": "profiles_email_unique",
           "nullsNotDistinct": false,
@@ -290,7 +289,7 @@
         }
       }
     },
-    "ratings": {
+    "public.ratings": {
       "name": "ratings",
       "schema": "",
       "columns": {
@@ -298,6 +297,12 @@
           "name": "id",
           "type": "serial",
           "primaryKey": true,
+          "notNull": true
+        },
+        "rate": {
+          "name": "rate",
+          "type": "integer",
+          "primaryKey": false,
           "notNull": true
         },
         "profile_id": {
@@ -323,7 +328,8 @@
           "name": "updated_at",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -356,15 +362,7 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "ratings_id_unique": {
-          "name": "ratings_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "id"
-          ]
-        }
-      }
+      "uniqueConstraints": {}
     }
   },
   "enums": {},
