@@ -24,11 +24,11 @@ function AvatarPhoto({ avatarUrl, type = "md" }: AvatarProps) {
 
   function getContainerSize() {
     if (type === "sm") {
-      return 8;
+      return 32;
     } else if (type === "md") {
-      return 10;
+      return 40;
     } else {
-      return 20;
+      return 80;
     }
   }
 
@@ -37,15 +37,18 @@ function AvatarPhoto({ avatarUrl, type = "md" }: AvatarProps) {
 
   return (
     <div
-      className={`flex justify-center items-center size-${containerSize} rounded-full bg-gradient-vertical`}
+      className={`relative flex justify-center items-center rounded-full bg-gradient-vertical`}
+      style={{
+        width: `${containerSize}px`,
+        height: `${containerSize}px`,
+      }}
     >
       <Image
         src={avatarUrl}
         alt="avatar-profile"
-        width={size}
-        height={size}
+        fill
         className="rounded-full"
-        style={{ objectFit: "contain" }}
+        style={{ objectFit: "cover" }}
       />
     </div>
   );
@@ -61,7 +64,9 @@ function AvatarDescription({
   return (
     <div className="flex flex-col gap-[2px]">
       <span className="text-base text-gray-100">{name}</span>
-      {description && <span className="text-gray-400">{description}</span>}
+      {description && (
+        <span className="text-gray-400 text-xs">{description}</span>
+      )}
     </div>
   );
 }

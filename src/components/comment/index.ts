@@ -4,3 +4,6 @@ export { CommentBookCard } from "./comment-book-card";
 export { CommentAvaliationTrigger } from "./comment-avaliation-trigger";
 export { CommentAvaliationInput } from "./comment-avaliation-input";
 export { CommentAvaliationCard } from "./comment-avaliation-card";
+export { CommentLoadCard } from "./load/comment-load-card";
+export { CommentLoadComment } from "./load/comment-load-comment";
+export { CommentAvaliationContainer } from "./comment-avaliation-container";

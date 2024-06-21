@@ -4,20 +4,28 @@ import Image from "next/image";
 import { Stars } from "../stars";
 
 type ShortBookCardProps = {
+  id: number;
   coverImage: string | null;
   title: string;
   author: string;
   rate: number;
+  selectBook: (bookId: number) => void;
 };
 
 export function ShortBookCard({
+  id,
   coverImage,
   author,
   title,
   rate,
+  selectBook,
 }: ShortBookCardProps) {
   return (
-    <div className="h-[130px] rounded-lg bg-gray-600 border border-gray-600 hover:border-gray-500 transition-all">
+    <div
+      role="button"
+      onClick={() => selectBook(id)}
+      className="h-[130px] rounded-lg bg-gray-600 border border-gray-600 hover:border-gray-500 transition-all"
+    >
       <div className="px-5 py-[18px] grid grid-cols-[auto_1fr_1fr] gap-6">
         <div className="rounded overflow-hidden">
           {coverImage ? (

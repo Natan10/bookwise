@@ -1,5 +1,5 @@
 import { Book } from "@/models/book/book";
 
-export type BookWithRate = Book & {
+export type BookWithRateDto = Book & {
   rate: number;
 };

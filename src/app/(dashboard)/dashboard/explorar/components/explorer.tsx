@@ -2,16 +2,16 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Binoculars } from "@phosphor-icons/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Input } from "@/components/input";
 import { Tag } from "@/components/tag";
-import { Binoculars } from "@phosphor-icons/react";
 import { ShortBookCard } from "@/components/card/short-book-card";
-import * as Comment from "@/components/comment";
 import { Category } from "@/models/category/category";
-import { getBooksByCategory } from "../_actions";
 import { Load } from "@/components/load";
+import { CommentSection } from "@/components/comment/comment-section";
+import { getBooksByCategory } from "../_actions";
 
 type ExplorerProps = {
   categories: Category[];
@@ -19,9 +19,12 @@ type ExplorerProps = {
 
 export function Explorer({ categories }: ExplorerProps) {
   const [searchBookTerm, setSearchBookTerm] = useState("");
+  const [bookId, setBookId] = useState<number | null>(null);
+
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
+
   const categoryType = searchParams.get("category");
 
   const { data: books, isLoading } = useQuery({
@@ -86,28 +89,19 @@ export function Explorer({ categories }: ExplorerProps) {
         {filterBooks?.map((book) => {
           return (
             <ShortBookCard
+              id={book.id}
               author={book.author}
               rate={book.rate}
               coverImage={book.coverImage}
               title={book.title}
               key={book.id}
+              selectBook={setBookId}
             />
           );
         })}
       </div>
 
-      {/* <Comment.CommentRoot>
-        <Comment.CommentClose />
-        <Comment.CommentBookCard />
-        <Comment.CommentAvaliationTrigger />
-
-        <div className="space-y-3">
-          <Comment.CommentAvaliationInput />
-          <Comment.CommentAvaliationCard />
-          <Comment.CommentAvaliationCard />
-          <Comment.CommentAvaliationCard />
-        </div>
-      </Comment.CommentRoot> */}
+      <CommentSection bookId={bookId} close={() => setBookId(null)} />
     </section>
   );
 }
