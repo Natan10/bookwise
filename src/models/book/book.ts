@@ -5,6 +5,6 @@ export interface Book {
   numOfPages: number;
   coverImage: string | null;
   description: string | null;
-  createdAt: Date;
+  createdAt: Date | null;
   updatedAt: Date | null;
 }
