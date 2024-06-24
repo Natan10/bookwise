@@ -21,7 +21,6 @@ function AvatarPhoto({ avatarUrl, type = "md" }: AvatarProps) {
       return 78;
     }
   }
-
   function getContainerSize() {
     if (type === "sm") {
       return 32;
@@ -31,10 +30,8 @@ function AvatarPhoto({ avatarUrl, type = "md" }: AvatarProps) {
       return 80;
     }
   }
-
   const size = getImageSize();
   const containerSize = getContainerSize();
-
   return (
     <div
       className={`relative flex justify-center items-center rounded-full bg-gradient-vertical`}

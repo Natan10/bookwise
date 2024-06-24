@@ -9,7 +9,7 @@ type ShortBookCardProps = {
   title: string;
   author: string;
   rate: number;
-  selectBook: (bookId: number) => void;
+  selectBook?: (bookId: number) => void;
 };
 
 export function ShortBookCard({
@@ -23,7 +23,7 @@ export function ShortBookCard({
   return (
     <div
       role="button"
-      onClick={() => selectBook(id)}
+      onClick={() => selectBook?.(id)}
       className="h-[130px] rounded-lg bg-gray-600 border border-gray-600 hover:border-gray-500 transition-all"
     >
       <div className="px-5 py-[18px] grid grid-cols-[auto_1fr_1fr] gap-6">

@@ -1,12 +1,18 @@
 "use client";
 
+import { ElementType } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ElementType } from "react";
+import { useSession, signOut } from "next-auth/react";
+import { usePathname, useRouter } from "next/navigation";
 import { Binoculars, ChartLineUp, SignOut, User } from "@phosphor-icons/react";
+
 import bookHeart from "@/assets/icons/book-heart.svg";
 
 export function NavigationSidebar() {
+  const { data: session } = useSession();
+  const router = useRouter();
+
   return (
     <aside className="flex p-5">
       <nav className="w-[232px] flex flex-col pt-10 px-12 pb-6 bg-gray-700 rounded-xl shadow-xl">
@@ -18,36 +24,54 @@ export function NavigationSidebar() {
         </div>
 
         <div className="mt-16 h-full flex flex-col gap-4">
-          <LinkItem active icon={ChartLineUp} path="#" title="Inicio" />
-          <LinkItem title="Explorar" icon={Binoculars} path="#" />
+          <LinkItem icon={ChartLineUp} path="/dashboard" title="Inicio" />
+          <LinkItem
+            title="Explorar"
+            icon={Binoculars}
+            path="/dashboard/explorar"
+          />
           <LinkItem icon={User} path="#" title="Perfil" />
         </div>
 
         <div>
-          <div className="mt-auto flex items-center gap-3">
-            <span className="font-bold text-base text-gray-200">
-              Fazer login
-            </span>
-            <button>
-              <SignOut size={20} className="text-green-100" />
-            </button>
-          </div>
-          {/* <div className="flex items-center gap-3">
-            <div className="relative flex items-center justify-center size-9 bg-gradient-vertical rounded-full">
-              <Image
-                src={"https://github.com/natan10.png"}
-                alt="perfil"
-                width={32}
-                height={32}
-                className="rounded-full"
-                style={{ objectFit: "contain" }}
-              />
+          {session ? (
+            <div className="grid grid-cols-3 items-center gap-3">
+              <div className="relative flex-0 flex items-center justify-center size-9 bg-gradient-vertical rounded-full">
+                <Image
+                  src={"https://github.com/natan10.png"}
+                  alt="perfil"
+                  width={32}
+                  height={32}
+                  className="rounded-full"
+                  style={{ objectFit: "contain" }}
+                />
+              </div>
+
+              <p className="text-center text-gray-200 text-xs truncate">
+                {session.user?.name}
+              </p>
+
+              <button
+                onClick={() =>
+                  signOut({
+                    callbackUrl: "http://localhost:3000/login",
+                  })
+                }
+                className="flex justify-end"
+              >
+                <SignOut size={20} className="text-[#F75A68]" />
+              </button>
             </div>
-            <span className="text-gray-200 text-sm">Natan</span>
-            <button>
-              <SignOut size={20} className="text-[#F75A68]" />
-            </button>
-          </div> */}
+          ) : (
+            <div className="mt-auto flex items-center gap-3">
+              <span className="font-bold text-base text-gray-200">
+                Fazer login
+              </span>
+              <button onClick={() => router.push("/login")}>
+                <SignOut size={20} className="text-green-100" />
+              </button>
+            </div>
+          )}
         </div>
       </nav>
     </aside>
@@ -57,16 +81,17 @@ export function NavigationSidebar() {
 function LinkItem({
   path,
   title,
-  active = false,
   icon: Icon,
 }: {
   path: string;
   title: string;
-  active?: boolean;
   icon: ElementType;
 }) {
+  const pathname = usePathname();
+  const isActive = pathname.endsWith(`${path}`);
+
   return (
-    <Link href={path} className="group" data-active={active}>
+    <Link href={path} className="group" data-active={isActive}>
       <div className="flex items-center gap-3">
         <div className="group-data-[active=true]:bg-gradient-vertical h-6 w-1 rounded-full bg-transparent" />
         <Icon

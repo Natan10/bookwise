@@ -1,17 +1,14 @@
-"use client";
-
-import Image from "next/image";
 import { ReactNode } from "react";
 import { X } from "@phosphor-icons/react";
 
 import github from "@/assets/icons/github.svg";
 import google from "@/assets/icons/google.svg";
-import { Overlay } from "./overlay";
+import { SocialLoginButton } from "./buttons/social-login-btn";
 
-function Content() {
+function Content({ close }: { close: () => void }) {
   return (
     <div className="relative flex items-center justify-center w-[516px] h-[337px] py-14 px-[72px] bg-gray-700 rounded-xl">
-      <button className="absolute top-4 right-4">
+      <button onClick={close} className="absolute top-4 right-4">
         <X size={24} className="text-gray-400" />
       </button>
       <div>
@@ -19,26 +16,42 @@ function Content() {
           Faça login para deixar sua avaliação
         </p>
         <div className="mt-10 flex flex-col gap-4">
-          <button className="flex items-center gap-5 p-5 bg-gray-600 rounded-lg hover:bg-gray-500 transition-colors outline-none">
-            <Image src={google} alt="google" width={30} height={30} />
-            <span className="text-md font-bold">Entrar com o Google</span>
-          </button>
-          <button className="flex items-center gap-5 p-5 bg-gray-600 rounded-lg hover:bg-gray-500 transition-colors outline-none">
-            <Image src={github} alt="github" width={30} height={30} />
-            <span className="text-md font-bold">Entrar com o Github</span>
-          </button>
+          <SocialLoginButton image={google} title="Entrar com o Google" />
+          <SocialLoginButton image={github} title="Entrar com o Github" />
         </div>
       </div>
     </div>
   );
 }
 
-function Root({ children }: { children: ReactNode }) {
+function Root({
+  overlay = true,
+  children,
+}: {
+  overlay?: boolean;
+  children: ReactNode;
+}) {
   return (
-    <div className="absolute inset-0 z-10 w-full h-full flex justify-center items-center">
+    <div
+      className={`absolute inset-0 z-10 w-full h-full ${
+        overlay && "bg-black/60"
+      } flex justify-center items-center`}
+    >
       {children}
     </div>
   );
 }
 
-export { Root, Content, Overlay };
+export function Modal({
+  overlay,
+  close,
+}: {
+  overlay?: boolean;
+  close: () => void;
+}) {
+  return (
+    <Root overlay={overlay}>
+      <Content close={close} />
+    </Root>
+  );
+}

@@ -1,4 +1,11 @@
+"use client";
+
+import { useEffect } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { signIn, useSession } from "next-auth/react";
+
+import { SocialLoginButton } from "@/components/buttons/social-login-btn";
 
 import login from "@/assets/login.svg";
 import github from "@/assets/icons/github.svg";
@@ -6,6 +13,20 @@ import google from "@/assets/icons/google.svg";
 import rocket from "@/assets/icons/rocket.svg";
 
 export default function Login() {
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  function signInWithoutCredentials() {
+    console.log("poha");
+    router.push("/dashboard");
+  }
+
+  useEffect(() => {
+    if (session) {
+      router.push("/");
+    }
+  }, [session, router]);
+
   return (
     <main className="h-full bg-gray-800">
       <section className="h-full p-5 grid grid-cols-2">
@@ -20,24 +41,21 @@ export default function Login() {
             </h2>
           </div>
           <div className="w-[372px] flex flex-col gap-5">
-            <button className="flex items-center gap-5 p-5 bg-gray-600 rounded-lg hover:bg-gray-500 transition-colors outline-none">
-              <Image src={google} alt="google" width={30} height={30} />
-              <span className="text-md font-bold text-gray-200">
-                Entrar com o Google
-              </span>
-            </button>
-            <button className="flex items-center gap-5 p-5 bg-gray-600 rounded-lg hover:bg-gray-500 transition-colors outline-none">
-              <Image src={github} alt="github" width={30} height={30} />
-              <span className="text-md font-bold text-gray-200">
-                Entrar com o Github
-              </span>
-            </button>
-            <button className="flex items-center gap-5 p-5 bg-gray-600 rounded-lg hover:bg-gray-500 transition-colors outline-none">
-              <Image src={rocket} alt="rocket" width={30} height={30} />
-              <span className="text-md font-bold text-gray-200">
-                Acessar como visitante
-              </span>
-            </button>
+            <SocialLoginButton
+              image={google}
+              title="Entrar com o Google"
+              fn={() => signIn("google")}
+            />
+            <SocialLoginButton
+              image={github}
+              title="Entrar com o Github"
+              fn={() => signIn("github")}
+            />
+            <SocialLoginButton
+              image={rocket}
+              title="Acessar como visitante"
+              fn={() => signInWithoutCredentials()}
+            />
           </div>
         </div>
       </section>

@@ -54,6 +54,7 @@ export default function Dashboard() {
               const rate = getRandomNumber(0, 5);
               return (
                 <ShortBookCard
+                  id={+book.id}
                   key={book.id}
                   author={book.author}
                   title={book.name}

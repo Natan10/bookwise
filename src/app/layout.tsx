@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Nunito_Sans } from "next/font/google";
+import { SessionContext } from "@/contexts/session-provider";
 import "./globals.css";
 
 const nunito = Nunito_Sans({
@@ -21,7 +22,9 @@ export default function RootLayout({
 }>) {
   return (
     <html>
-      <body className={`${nunito.variable} h-screen`}>{children}</body>
+      <SessionContext>
+        <body className={`${nunito.variable} h-screen`}>{children}</body>
+      </SessionContext>
     </html>
   );
 }
