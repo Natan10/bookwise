@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 import { SocialLoginButton } from "@/components/buttons/social-login-btn";
 
@@ -13,19 +12,10 @@ import google from "@/assets/icons/google.svg";
 import rocket from "@/assets/icons/rocket.svg";
 
 export default function Login() {
-  const { data: session } = useSession();
   const router = useRouter();
-
   function signInWithoutCredentials() {
-    console.log("poha");
     router.push("/dashboard");
   }
-
-  useEffect(() => {
-    if (session) {
-      router.push("/");
-    }
-  }, [session, router]);
 
   return (
     <main className="h-full bg-gray-800">
@@ -44,12 +34,20 @@ export default function Login() {
             <SocialLoginButton
               image={google}
               title="Entrar com o Google"
-              fn={() => signIn("google")}
+              fn={() =>
+                signIn("google", {
+                  callbackUrl: "http://localhost:3000/dashboard",
+                })
+              }
             />
             <SocialLoginButton
               image={github}
               title="Entrar com o Github"
-              fn={() => signIn("github")}
+              fn={() =>
+                signIn("github", {
+                  callbackUrl: "http://localhost:3000/dashboard",
+                })
+              }
             />
             <SocialLoginButton
               image={rocket}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 
 import * as Components from "./index";
 import {
@@ -8,6 +9,7 @@ import {
   getBookById,
 } from "@/app/(dashboard)/dashboard/explorar/_actions";
 import { CommentCardDto } from "./dtos/comment-card-dto";
+import { Modal } from "../modal";
 
 export function CommentSection({
   bookId,
@@ -17,7 +19,10 @@ export function CommentSection({
   close: () => void;
 }) {
   const [comment, setComment] = useState("");
+  const [shouldShowLoginModal, setShouldShowLoginModal] = useState(false);
+
   const queryClient = useQueryClient();
+  const { data: session } = useSession();
 
   const { data, isLoading } = useQuery({
     queryKey: ["book_informations", bookId],
@@ -86,28 +91,35 @@ export function CommentSection({
     <Components.CommentRoot>
       <Components.CommentClose onClick={close} />
       {data && (
-        <>
-          <Components.CommentBookCard
-            pages={data.numOfPages}
-            categories={data.categories}
-            title={data.title}
-            author={data.author}
-            bookImage={data.coverImage}
-            rate={Math.trunc(data.average)}
-          />
-          <Components.CommentAvaliationTrigger />
-        </>
+        <Components.CommentBookCard
+          pages={data.numOfPages}
+          categories={data.categories}
+          title={data.title}
+          author={data.author}
+          bookImage={data.coverImage}
+          rate={Math.trunc(data.average)}
+        />
       )}
       {isLoading && <Components.CommentLoadCard />}
 
-      <div className="space-y-3">
+      <div className="space-y-3 mt-11">
         {!isLoading && (
-          <Components.CommentAvaliationInput
-            isLoading={isPending || isLoading}
-            onSendComment={handleSendComment}
-            comment={comment}
-            setComment={setComment}
-          />
+          <>
+            {!session && (
+              <Components.CommentAvaliationTrigger
+                setAvaliation={() => setShouldShowLoginModal(true)}
+              />
+            )}
+            {session && (
+              <Components.CommentAvaliationInput
+                isLoading={isPending || isLoading}
+                onSendComment={handleSendComment}
+                comment={comment}
+                setComment={setComment}
+                close={close}
+              />
+            )}
+          </>
         )}
 
         {comments && (
@@ -122,6 +134,10 @@ export function CommentSection({
           </div>
         )}
       </div>
+
+      {shouldShowLoginModal && (
+        <Modal close={() => setShouldShowLoginModal(false)} />
+      )}
     </Components.CommentRoot>
   );
 }

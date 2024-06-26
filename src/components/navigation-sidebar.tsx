@@ -47,7 +47,7 @@ export function NavigationSidebar() {
                 />
               </div>
 
-              <p className="text-center text-gray-200 text-xs truncate">
+              <p className="text-center text-gray-200 text-xs max-w-14 text-ellipsis overflow-hidden">
                 {session.user?.name}
               </p>
 

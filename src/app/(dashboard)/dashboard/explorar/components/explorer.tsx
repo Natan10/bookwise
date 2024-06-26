@@ -11,7 +11,6 @@ import { ShortBookCard } from "@/components/card/short-book-card";
 import { Category } from "@/models/category/category";
 import { Load } from "@/components/load";
 import { CommentSection } from "@/components/comment/comment-section";
-import { Modal } from "@/components/modal";
 import { getBooksByCategory } from "../_actions";
 
 type ExplorerProps = {
@@ -103,8 +102,6 @@ export function Explorer({ categories }: ExplorerProps) {
       </div>
 
       <CommentSection bookId={bookId} close={() => setBookId(null)} />
-
-      {/* <Modal /> */}
     </section>
   );
 }

@@ -9,11 +9,13 @@ export function CommentAvaliationInput({
   isLoading,
   comment,
   setComment,
+  close,
 }: {
   onSendComment: (comment: string, rate: number) => Promise<void>;
   setComment: (data: string) => void;
   isLoading: boolean;
   comment: string;
+  close: () => void;
 }) {
   const [rate, setRate] = useState(0);
 
@@ -59,6 +61,7 @@ export function CommentAvaliationInput({
           <button
             disabled={isLoading}
             className="bg-gray-500 flex items-center justify-center rounded p-2 "
+            onClick={close}
             type="button"
           >
             {isLoading ? (

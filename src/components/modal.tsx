@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { X } from "@phosphor-icons/react";
+import { signIn } from "next-auth/react";
 
 import github from "@/assets/icons/github.svg";
 import google from "@/assets/icons/google.svg";
@@ -16,8 +17,24 @@ function Content({ close }: { close: () => void }) {
           Faça login para deixar sua avaliação
         </p>
         <div className="mt-10 flex flex-col gap-4">
-          <SocialLoginButton image={google} title="Entrar com o Google" />
-          <SocialLoginButton image={github} title="Entrar com o Github" />
+          <SocialLoginButton
+            image={google}
+            title="Entrar com o Google"
+            fn={() =>
+              signIn("google", {
+                callbackUrl: "http://localhost:3000/dashboard/explorar",
+              })
+            }
+          />
+          <SocialLoginButton
+            image={github}
+            title="Entrar com o Github"
+            fn={() =>
+              signIn("github", {
+                callbackUrl: "http://localhost:3000/dashboard/explorar",
+              })
+            }
+          />
         </div>
       </div>
     </div>
