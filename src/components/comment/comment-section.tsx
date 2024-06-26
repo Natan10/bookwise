@@ -67,11 +67,28 @@ export function CommentSection({
         bookId: bookId,
         comment,
         rate,
-        profileId: 1,
+        profile: session
+          ? {
+              email: session.user?.email!,
+              avatar: session.user?.image || undefined,
+              username: session.user?.name || undefined,
+            }
+          : null,
       });
     },
     onError: (e) => toast.error(e.message),
-    onSuccess: () => setComment(""),
+    onSuccess: async () => {
+      setComment("");
+      await queryClient.refetchQueries({
+        queryKey: ["book_informations", bookId],
+        type: "active",
+        exact: true,
+      });
+      await queryClient.invalidateQueries({
+        queryKey: ["books_by_category"],
+        type: "all",
+      });
+    },
   });
 
   async function handleSendComment(comment: string, rate: number) {

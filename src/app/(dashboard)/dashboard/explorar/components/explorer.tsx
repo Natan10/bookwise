@@ -45,7 +45,7 @@ export function Explorer({ categories }: ExplorerProps) {
     router.push(`${pathname}?${urlParams.toString()}`);
   }
 
-  const filterBooks = books?.filter((book) => {
+  const filterBooks = books?.filter((book: any) => {
     if (book.author.toUpperCase().includes(searchBookTerm.toUpperCase()))
       return book;
     if (book.description?.toUpperCase().includes(searchBookTerm.toUpperCase()))
@@ -86,7 +86,7 @@ export function Explorer({ categories }: ExplorerProps) {
       )}
 
       <div className="mt-12 grid grid-cols-3 gap-5">
-        {filterBooks?.map((book) => {
+        {filterBooks?.map((book: any) => {
           return (
             <ShortBookCard
               id={book.id}

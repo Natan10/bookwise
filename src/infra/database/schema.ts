@@ -30,7 +30,6 @@ export const profiles = pgTable("profiles", {
   email: text("email").notNull().unique(),
   username: text("username"),
   avatar: text("avatar"),
-  password: text("password"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

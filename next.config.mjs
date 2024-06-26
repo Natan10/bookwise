@@ -9,6 +9,9 @@ const nextConfig = {
       },
       {
         hostname: 'doodleipsum.com'
+      },
+      {
+        hostname: 'lh3.googleusercontent.com'
       }
     ],
   },

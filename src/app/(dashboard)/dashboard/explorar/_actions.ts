@@ -8,6 +8,7 @@ import {
   books,
   categories_to_books,
   avaliations,
+  profiles,
 } from "@/infra/database/schema";
 import { BookWithRateDto } from "./dtos/book-rate-dto";
 import { BookInfoDto } from "./dtos/book-info-dto";
@@ -23,7 +24,7 @@ export async function getBooksByCategory(categoryType: string | null) {
     categoryId = category.id;
   }
 
-  const query = db
+  const query: any = db
     .select({
       ...getTableColumns(books),
       rate: sql<number>`avg(${avaliations.rate})`,
@@ -38,7 +39,7 @@ export async function getBooksByCategory(categoryType: string | null) {
   }
 
   const data = await query;
-  return data.map((book) => {
+  return data.map((book: any) => {
     return {
       id: book.id,
       author: book.author,
@@ -97,18 +98,40 @@ export async function getBookById(bookId: number) {
 }
 
 export async function addComment({
-  profileId,
+  profile,
   bookId,
   comment,
   rate,
 }: {
   bookId: number;
-  profileId: number;
+  profile: {
+    email: string;
+    username?: string;
+    avatar?: string;
+  } | null;
   comment: string;
   rate: number;
 }) {
   await db.transaction(async (tx) => {
+    if (!profile) {
+      throw new Error("User not exist");
+    }
+
     // check profile
+    let record = await tx.query.profiles.findFirst({
+      where: eq(profiles.email, profile.email),
+    });
+
+    if (!record) {
+      [record] = await tx
+        .insert(profiles)
+        .values({
+          email: profile.email,
+          avatar: profile.avatar,
+          username: profile.username,
+        })
+        .returning();
+    }
 
     // check book
     const book = await tx.query.books.findFirst({
@@ -120,7 +143,7 @@ export async function addComment({
     if (!comment) throw new Error("Comment not allowed");
 
     const avaliationComment = await tx.query.avaliations.findFirst({
-      where: (avaliations, { eq }) => eq(avaliations.profileId, profileId),
+      where: (avaliations, { eq }) => eq(avaliations.profileId, record.id),
     });
 
     if (avaliationComment) {
@@ -129,7 +152,7 @@ export async function addComment({
         .where(
           and(
             eq(avaliations.bookId, book.id),
-            eq(avaliations.profileId, profileId)
+            eq(avaliations.profileId, record.id)
           )
         );
     }
@@ -138,7 +161,7 @@ export async function addComment({
       bookId: book.id,
       comment: comment,
       rate: rate,
-      profileId: profileId,
+      profileId: record.id,
     });
   });
 }

@@ -38,7 +38,10 @@ export function NavigationSidebar() {
             <div className="grid grid-cols-3 items-center gap-3">
               <div className="relative flex-0 flex items-center justify-center size-9 bg-gradient-vertical rounded-full">
                 <Image
-                  src={"https://github.com/natan10.png"}
+                  src={
+                    session.user?.image ||
+                    "https://doodleipsum.com/700/avatar?i=8cb73ce685d8071fc7374ccd71072c5d"
+                  }
                   alt="perfil"
                   width={32}
                   height={32}

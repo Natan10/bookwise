@@ -1,8 +1,9 @@
-import { Check, CircleNotch, Star, X } from "@phosphor-icons/react";
+import { Check, CircleNotch, X } from "@phosphor-icons/react";
 import { FormEvent, useState } from "react";
 
 import * as Avatar from "../avatar";
 import { CommentRateInput } from "./comment-rate-input";
+import { useSession } from "next-auth/react";
 
 export function CommentAvaliationInput({
   onSendComment,
@@ -17,6 +18,7 @@ export function CommentAvaliationInput({
   comment: string;
   close: () => void;
 }) {
+  const { data: session } = useSession();
   const [rate, setRate] = useState(0);
 
   async function handleSubmit(e: FormEvent) {
@@ -30,10 +32,15 @@ export function CommentAvaliationInput({
       <div className="flex justify-between items-center">
         <Avatar.AvatarRoot>
           <Avatar.AvatarPhoto
-            avatarUrl="https://github.com/natan10.png"
+            avatarUrl={
+              session?.user?.image ||
+              "https://doodleipsum.com/700/avatar?i=8cb73ce685d8071fc7374ccd71072c5d"
+            }
             type="md"
           />
-          <Avatar.AvatarDescription name="Natan lemos" />
+          <Avatar.AvatarDescription
+            name={session?.user?.name || session?.user?.email || ""}
+          />
         </Avatar.AvatarRoot>
         <CommentRateInput rate={rate} setRate={setRate} />
       </div>
