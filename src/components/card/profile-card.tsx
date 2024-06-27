@@ -22,7 +22,7 @@ export function ProfileCard({
       <div className="grid grid-cols-[auto_1fr_1fr] gap-6">
         <div className="rounded overflow-hidden">
           <Image
-            src={coverImage ?? mockOptions.coverBook}
+            src={coverImage ?? mockOptions.coverBook.sort()[0]}
             alt="livro"
             width={108}
             height={152}

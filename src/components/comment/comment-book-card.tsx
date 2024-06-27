@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Stars } from "../stars";
 import { BookOpen, BookmarkSimple } from "@phosphor-icons/react";
+import { mockOptions } from "@/lib/mock-options";
 
 type CommentBookCardProps = {
   categories: string[];
@@ -23,17 +24,18 @@ export function CommentBookCard({
     <div className="px-6 py-4 rounded-[10px] bg-gray-600 border hover:border-gray-600 transition-all">
       <div className="grid grid-cols-[auto_1fr_1fr] gap-8">
         <div className="rounded overflow-hidden">
-          {bookImage ? (
-            <Image
-              src={bookImage}
-              alt={`${title}`}
-              width={200}
-              height={172}
-              style={{ objectFit: "cover" }}
-            />
-          ) : (
-            <div className="h-[172px] w-[200px] bg-gray-400"></div>
-          )}
+          <Image
+            src={
+              bookImage ??
+              mockOptions.coverBook[
+                Math.floor(Math.random() * mockOptions.coverBook.length)
+              ]
+            }
+            alt={`${title}`}
+            width={172}
+            height={172}
+            style={{ objectFit: "cover" }}
+          />
         </div>
         <div className="col-span-2 flex flex-col">
           <div className="flex flex-col gap-2">
