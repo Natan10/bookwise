@@ -1,17 +1,42 @@
 "use client";
 
+import { User } from "@phosphor-icons/react";
+import { formatDistanceToNow } from "date-fns";
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+
 import { ProfileCard } from "@/components/card/profile-card";
 import { Input } from "@/components/input";
-import {
-  BookOpen,
-  BookmarkSimple,
-  Books,
-  User,
-  UserList,
-} from "@phosphor-icons/react";
-import { AvatarPhoto } from "@/components/avatar";
+import { ProfileInfo } from "./components/profile-info";
+import { getProfileBooks } from "./_actions";
+import { Load } from "@/components/load";
+import { useState } from "react";
+import { AvaliationBookProfileDto } from "./dtos/avaliation-book-profile-dto";
 
 export default function Profile() {
+  const { data: session } = useSession();
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["profile-books", session?.user?.email],
+    queryFn: async () => {
+      if (!session || !session.user) return null;
+      const data = await getProfileBooks({ email: session.user.email! });
+      return data;
+    },
+    enabled: !!session?.user,
+  });
+
+  const [searchBookTerm, setSearchBookTerm] = useState("");
+
+  const filterBooks = data?.filter((book: AvaliationBookProfileDto) => {
+    if (book.bookAuthor?.toUpperCase().includes(searchBookTerm.toUpperCase()))
+      return book;
+    if (book.bookTitle?.toUpperCase().includes(searchBookTerm.toUpperCase()))
+      return book;
+    if (book.comment.toUpperCase().includes(searchBookTerm.toUpperCase()))
+      return book;
+  });
+
   return (
     <section className="px-[76px] pt-12 pb-7">
       <header>
@@ -21,78 +46,43 @@ export default function Profile() {
         </div>
       </header>
 
-      <div className="mt-10 grid grid-cols-3">
+      <div className="pt-10 grid grid-cols-3">
         {/* cards */}
         <div className="col-span-2">
-          <Input placeholder="Buscar livro avaliado" />
-          <div className="mt-8 space-y-6">
-            <div className="space-y-2">
-              <span className="text-gray-300 text-sm">Há 2 dias</span>
-              <ProfileCard />
-            </div>
-            <div className="space-y-2">
-              <span className="text-gray-300 text-sm">Há 4 meses</span>
-              <ProfileCard />
-            </div>
+          <Input
+            placeholder="Buscar livro avaliado"
+            onChange={(e) => setSearchBookTerm(e.target.value)}
+          />
+
+          <div className="mt-8 space-y-6 h-screen overflow-y-auto scrollbar-hide">
+            {isLoading && (
+              <div className="w-full h-screen flex justify-center items-center gap-3">
+                <Load />
+                <span className="text-sm text-gray-200">Carregando...</span>
+              </div>
+            )}
+
+            {filterBooks?.map((d) => {
+              const distance = formatDistanceToNow(d.createdAt!, {
+                addSuffix: true,
+              });
+              return (
+                <div className="space-y-2" key={d.id}>
+                  <span className="text-gray-300 text-sm">{distance}</span>
+                  <ProfileCard
+                    title={d.bookTitle!}
+                    author={d.bookAuthor!}
+                    comment={d.comment}
+                    coverImage={d.bookCover}
+                    rate={d.rate}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
 
-        {/* profile */}
-        <div className="ml-16 ">
-          <div className="border-l border-gray-700/10">
-            <div className="flex flex-col items-center justify-center gap-5">
-              <AvatarPhoto
-                avatarUrl="https://github.com/natan10.png"
-                type="lg"
-              />
-              <div className="text-center">
-                <p className="text-gray-100 text-xl">Natan lemos</p>
-                <span className="text-gray-400 text-sm">membro desde 2024</span>
-              </div>
-            </div>
-
-            <div className="my-8 flex justify-center">
-              <div className="w-8 h-1 rounded-full bg-gradient-horizontal" />
-            </div>
-
-            <div className="flex flex-col items-center">
-              <div className="space-y-10">
-                <div className="flex items-center gap-5">
-                  <BookOpen size={32} className="text-green-100" />
-                  <div className="flex flex-col">
-                    <span className="text-gray-100 font-bold">3853</span>
-                    <span className="text-gray-300 text-sm">Páginas lidas</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-5">
-                  <Books size={32} className="text-green-100" />
-                  <div className="flex flex-col">
-                    <span className="text-gray-100 font-bold">10</span>
-                    <span className="text-gray-300 text-sm">
-                      Livros avaliados
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-5">
-                  <UserList size={32} className="text-green-100" />
-                  <div className="flex flex-col">
-                    <span className="text-gray-100 font-bold">8</span>
-                    <span className="text-gray-300 text-sm">Autores lidos</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-5">
-                  <BookmarkSimple size={32} className="text-green-100" />
-                  <div className="flex flex-col">
-                    <span className="text-gray-100 font-bold">Computação</span>
-                    <span className="text-gray-300 text-sm">
-                      Categoria mais lida
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ProfileInfo />
       </div>
     </section>
   );

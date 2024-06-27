@@ -30,7 +30,7 @@ export function NavigationSidebar() {
             icon={Binoculars}
             path="/dashboard/explorar"
           />
-          <LinkItem icon={User} path="#" title="Perfil" />
+          <LinkItem icon={User} path="/dashboard/profile" title="Perfil" />
         </div>
 
         <div>

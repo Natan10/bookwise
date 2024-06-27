@@ -43,9 +43,11 @@ function AvatarPhoto({ avatarUrl, type = "md" }: AvatarProps) {
       <Image
         src={avatarUrl}
         alt="avatar-profile"
-        fill
+        // fill
+        width={size}
+        height={size}
         className="rounded-full"
-        style={{ objectFit: "cover" }}
+        style={{ objectFit: "contain" }}
       />
     </div>
   );
