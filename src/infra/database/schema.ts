@@ -34,19 +34,6 @@ export const profiles = pgTable("profiles", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-export const comments = pgTable("commments", {
-  id: serial("id").primaryKey(),
-  comment: text("comment", {}).notNull(),
-  profileId: integer("profile_id")
-    .references(() => profiles.id, { onDelete: "cascade" })
-    .notNull(),
-  bookId: integer("book_id")
-    .references(() => books.id, { onDelete: "cascade" })
-    .notNull(),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-});
-
 export const avaliations = pgTable("avaliations", {
   id: serial("id").primaryKey(),
   comment: text("comment", {}).notNull(),
@@ -61,21 +48,6 @@ export const avaliations = pgTable("avaliations", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-export const ratings = pgTable("ratings", {
-  id: serial("id").primaryKey(),
-  rate: integer("rate").notNull(),
-  profileId: integer("profile_id")
-    .references(() => profiles.id, { onDelete: "cascade" })
-    .notNull(),
-  bookId: integer("book_id")
-    .references(() => books.id, {
-      onDelete: "cascade",
-    })
-    .notNull(),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-});
-
 export const categoriesRelations = relations(categories, ({ many }) => {
   return {
     books: many(categories_to_books),
@@ -85,8 +57,6 @@ export const categoriesRelations = relations(categories, ({ many }) => {
 export const booksRelations = relations(books, ({ many }) => {
   return {
     categories: many(categories_to_books),
-    ratings: many(ratings),
-    comments: many(comments),
     avaliations: many(avaliations),
   };
 });
@@ -122,28 +92,6 @@ export const categoriesToBooksRelations = relations(
   }
 );
 
-export const ratingsRelations = relations(ratings, ({ one }) => {
-  return {
-    profile: one(profiles, {
-      references: [profiles.id],
-      fields: [ratings.profileId],
-    }),
-    book: one(books, {
-      references: [books.id],
-      fields: [ratings.bookId],
-    }),
-  };
-});
-
-export const commentsRelations = relations(comments, ({ one }) => {
-  return {
-    book: one(books, {
-      fields: [comments.bookId],
-      references: [books.id],
-    }),
-  };
-});
-
 export const avaliationsRelations = relations(avaliations, ({ one }) => {
   return {
     book: one(books, {
@@ -156,29 +104,3 @@ export const avaliationsRelations = relations(avaliations, ({ one }) => {
     }),
   };
 });
-
-/*
-  Categories
-    - type    
-  Book 
-    - title
-    - description
-    - author
-    - pages
-    - categories
-    - profile
-  Profile
-    - email
-    - name
-    - avatar
-    - password
-  ReadBooks
-    - profile
-    - book
-    - isRead
-  Rating
-    - book
-    - profile
-    - rate
-    - commments
-*/

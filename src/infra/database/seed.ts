@@ -217,27 +217,6 @@ const categories = [
 
 async function seedDb() {
   console.log("Running seeds...");
-
-  // const booksInserts = books.map(async (book) => {
-  //   return db.insert(schema.books).values({
-  //     author: book.author,
-  //     title: book.title,
-  //     numOfPages: book.numOfPages,
-  //     description: book.description,
-  //   });
-  // });
-
-  // return Promise.all(booksInserts);
-
-  // const categoriesInserts = categories.map(async (category) => {
-  //   return await db.insert(schema.categories).values({
-  //     id: category.id,
-  //     type: category.type,
-  //   });
-  // });
-
-  // return Promise.all(categoriesInserts);
-
   const categoryAndBookRelationInserts = categories.map(async (category) => {
     const bookIds = category.bookIds;
     return bookIds.map(async (bookId) => {
