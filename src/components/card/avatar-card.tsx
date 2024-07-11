@@ -1,24 +1,46 @@
-"use client";
-
 import Image from "next/image";
-import { Stars } from "../stars";
-import * as Avatar from "@/components/avatar";
+import { formatDistanceToNow } from "date-fns";
 
-export function AvatarCard() {
+import { Stars } from "../stars";
+import { Avaliation } from "@/models/avaliation";
+import * as Avatar from "@/components/avatar";
+import { LastAvaliationDto } from "@/app/(dashboard)/dashboard/dtos/last-avaliation-dto";
+import { mockOptions } from "@/lib/mock-options";
+
+type AvatarCardProps = {
+  avaliation: LastAvaliationDto;
+};
+
+export function AvatarCard({ avaliation }: AvatarCardProps) {
+  const profileUrl =
+    avaliation.profile?.avatar ||
+    "https://doodleipsum.com/700x933/avatar?i=236f057bf1e40dc8090b96d71dbb4f65";
+
+  const distance = formatDistanceToNow(avaliation.createdAt!, {
+    addSuffix: true,
+  });
+
   return (
     <div className="h-[280px] p-6 rounded-lg bg-gray-600 transition-all">
       <div className="flex justify-between items-start">
         <Avatar.AvatarRoot>
-          <Avatar.AvatarPhoto avatarUrl="https://github.com/natan10.png" />
-          <Avatar.AvatarDescription name="Natan" description="Hoje" />
+          <Avatar.AvatarPhoto avatarUrl={profileUrl} />
+          <Avatar.AvatarDescription
+            name={
+              avaliation.profile?.username ||
+              avaliation.profile?.email ||
+              "Sem dado"
+            }
+            description={distance}
+          />
         </Avatar.AvatarRoot>
-        <Stars rate={2} />
+        <Stars rate={avaliation.rate} />
       </div>
 
       <div className="mt-8 grid grid-cols-[auto_1fr_1fr] gap-5">
         <div className="rounded">
           <Image
-            src={"/images/books/o-guia-do-mochileiro-das-galaxias.png"}
+            src={avaliation.book.coverImage || mockOptions.coverBook[0]}
             alt="livro"
             width={108}
             height={152}
@@ -28,14 +50,13 @@ export function AvatarCard() {
         <div className="col-span-2">
           <div className="mb-5">
             <p className="text-gray-100 text-base font-bold">
-              Entendendo Algoritmos
+              {avaliation.book.title}
             </p>
-            <p className="text-sm text-gray-400">Aditya Bhargava</p>
+            <p className="text-sm text-gray-400">{avaliation.book.author}</p>
           </div>
           <div className="h-20 flex ">
             <p className="text-gray-300 text-sm text-ellipsis overflow-hidden">
-              Nec tempor nunc in egestas. Euismod nisi eleifend at et in
-              sagittis. Penatibus id vestibulum imperdiet a at imperdiet lectu
+              {avaliation.comment}
             </p>
           </div>
         </div>

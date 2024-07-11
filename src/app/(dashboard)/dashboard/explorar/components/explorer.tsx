@@ -80,8 +80,8 @@ export function Explorer({ categories }: ExplorerProps) {
 
       {isLoading && (
         <div className="w-full h-screen flex justify-center items-center gap-3">
-          <Load />
           <span className="text-sm text-gray-200">Carregando...</span>
+          <Load />
         </div>
       )}
 

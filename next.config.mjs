@@ -8,6 +8,9 @@ const nextConfig = {
         port: ''  
       },
       {
+        hostname: 'avatars.githubusercontent.com'
+      },
+      {
         hostname: 'doodleipsum.com'
       },
       {
