@@ -1,31 +1,20 @@
 "use client";
 
+import { useState } from "react";
 import { User } from "@phosphor-icons/react";
 import { formatDistanceToNow } from "date-fns";
-import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 
 import { ProfileCard } from "@/components/card/profile-card";
 import { Input } from "@/components/input";
 import { ProfileInfo } from "./components/profile-info";
-import { getProfileBooks } from "./_actions";
 import { Load } from "@/components/load";
-import { useState } from "react";
 import { AvaliationBookProfileDto } from "./dtos/avaliation-book-profile-dto";
+import { useGetProfileBooks } from "./hooks/useGetProfileBooks";
 
 export default function Profile() {
   const { data: session } = useSession();
-
-  const { data, isLoading } = useQuery({
-    queryKey: ["profile-books", session?.user?.email],
-    queryFn: async () => {
-      if (!session || !session.user) return null;
-      const data = await getProfileBooks({ email: session.user.email! });
-      return data;
-    },
-    enabled: !!session?.user,
-  });
-
+  const { data, isLoading } = useGetProfileBooks({ session });
   const [searchBookTerm, setSearchBookTerm] = useState("");
 
   const filterBooks = data?.filter((book: AvaliationBookProfileDto) => {

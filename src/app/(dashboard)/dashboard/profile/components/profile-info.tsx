@@ -1,25 +1,17 @@
-import { AvatarPhoto } from "@/components/avatar";
 import {
   BookOpen,
   BookmarkSimple,
   Books,
   UserList,
 } from "@phosphor-icons/react";
-import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import { getProfileInfoStats } from "../_actions";
+
+import { AvatarPhoto } from "@/components/avatar";
+import { useGetProfileInfo } from "../hooks/useGetProfileInfo";
 
 export function ProfileInfo() {
   const { data: session } = useSession();
-
-  const { data, isLoading } = useQuery({
-    queryKey: ["profile-info", session?.user?.email],
-    queryFn: async () => {
-      if (!session || !session.user) return null;
-      const data = await getProfileInfoStats({ email: session.user.email! });
-      return data;
-    },
-  });
+  const { data } = useGetProfileInfo({ session });
 
   return (
     <div className="ml-16">
