@@ -2,10 +2,9 @@ import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
 
 import { Stars } from "../stars";
-import { Avaliation } from "@/models/avaliation";
 import * as Avatar from "@/components/avatar";
 import { LastAvaliationDto } from "@/app/(dashboard)/dashboard/dtos/last-avaliation-dto";
-import { mockOptions } from "@/lib/mock-options";
+import bannerBook from "@/assets/banner_book.svg";
 
 type AvatarCardProps = {
   avaliation: LastAvaliationDto;
@@ -40,7 +39,7 @@ export function AvatarCard({ avaliation }: AvatarCardProps) {
       <div className="mt-8 grid grid-cols-[auto_1fr_1fr] gap-5">
         <div className="rounded">
           <Image
-            src={avaliation.book.coverImage || mockOptions.coverBook[0]}
+            src={avaliation.book.coverImage ?? bannerBook}
             alt="livro"
             width={108}
             height={152}

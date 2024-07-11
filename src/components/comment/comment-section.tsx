@@ -18,7 +18,6 @@ export function CommentSection({
   bookId: number | null;
   close: () => void;
 }) {
-  const [comment, setComment] = useState("");
   const [shouldShowLoginModal, setShouldShowLoginModal] = useState(false);
 
   const queryClient = useQueryClient();
@@ -78,7 +77,6 @@ export function CommentSection({
     },
     onError: (e) => toast.error(e.message),
     onSuccess: async () => {
-      setComment("");
       await queryClient.refetchQueries({
         queryKey: ["book_informations", bookId],
         type: "active",
@@ -131,8 +129,6 @@ export function CommentSection({
               <Components.CommentAvaliationInput
                 isLoading={isPending || isLoading}
                 onSendComment={handleSendComment}
-                comment={comment}
-                setComment={setComment}
                 close={close}
               />
             )}

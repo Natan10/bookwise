@@ -1,10 +1,9 @@
-"use client";
-
 import Image from "next/image";
-import { Stars } from "../stars";
-import { mockOptions } from "@/lib/mock-options";
 import { formatDistanceToNow } from "date-fns";
+
+import { Stars } from "../stars";
 import { LastBookReadInfoDto } from "@/app/(dashboard)/dashboard/dtos/last-book-read-info-dto";
+import bannerBook from "@/assets/banner_book.svg";
 
 type BigBookCardProps = {
   data: LastBookReadInfoDto;
@@ -22,7 +21,7 @@ export function BigBookCard({
       <div className="px-6 py-5 grid grid-cols-[auto_1fr_1fr] gap-6">
         <div className="rounded">
           <Image
-            src={coverImage ?? mockOptions.coverBook[0]}
+            src={coverImage ?? bannerBook}
             alt={title}
             width={108}
             height={152}

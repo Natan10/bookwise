@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
+
 import { Stars } from "../stars";
-import { mockOptions } from "@/lib/mock-options";
+import bannerBook from "@/assets/banner_book.svg";
 
 type ShortBookCardProps = {
   id: number;
@@ -30,12 +31,7 @@ export function ShortBookCard({
       <div className="px-5 py-[18px] grid grid-cols-[auto_1fr_1fr] gap-6">
         <div className="rounded overflow-hidden">
           <Image
-            src={
-              coverImage ??
-              mockOptions.coverBook[
-                Math.floor(Math.random() * mockOptions.coverBook.length)
-              ]
-            }
+            src={coverImage ?? bannerBook}
             alt={`${title}`}
             width={64}
             height={94}

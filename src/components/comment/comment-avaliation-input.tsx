@@ -8,23 +8,21 @@ import { useSession } from "next-auth/react";
 export function CommentAvaliationInput({
   onSendComment,
   isLoading,
-  comment,
-  setComment,
   close,
 }: {
   onSendComment: (comment: string, rate: number) => Promise<void>;
-  setComment: (data: string) => void;
   isLoading: boolean;
-  comment: string;
   close: () => void;
 }) {
   const { data: session } = useSession();
   const [rate, setRate] = useState(0);
+  const [comment, setComment] = useState("");
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     await onSendComment(comment, rate);
     setRate(0);
+    setComment("");
   }
 
   return (
