@@ -3,7 +3,7 @@
 import { avg, desc, eq, getTableColumns } from "drizzle-orm";
 
 import { avaliations, books, profiles } from "@/infra/database/schema";
-import { db } from "@/infra/database/client";
+import { db } from "@/infra/database/neon-client";
 import { LastAvaliationDto } from "@/app/(dashboard)/dashboard/dtos/last-avaliation-dto";
 import { LastBookReadInfoDto } from "@/app/(dashboard)/dashboard/dtos/last-book-read-info-dto";
 import { PopularBookDto } from "@/app/(dashboard)/dashboard/dtos/popular-book-dto";
@@ -54,7 +54,6 @@ export async function getLatestAvaliations() {
 }
 
 export async function getPopularBooks() {
-  // get avg ratings of books
   const info = await db
     .select({
       averageMedia: avg(avaliations.rate),
@@ -68,6 +67,21 @@ export async function getPopularBooks() {
     .groupBy(books.id, avaliations.rate)
     .orderBy(desc(avaliations.rate))
     .limit(4);
+
+  if (!info.length) {
+    const mostReadBooks = await db
+      .select({
+        id: books.id,
+        title: books.title,
+        author: books.author,
+        coverImage: books.coverImage,
+      })
+      .from(books)
+      .orderBy(desc(books.createdAt))
+      .limit(3);
+
+    return mostReadBooks as PopularBookDto[];
+  }
 
   return info as PopularBookDto[];
 }

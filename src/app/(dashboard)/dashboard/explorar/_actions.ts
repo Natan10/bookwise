@@ -1,8 +1,8 @@
 "use server";
 
-import { and, eq, getTableColumns, sql } from "drizzle-orm";
+import { and, avg, eq, getTableColumns, sql } from "drizzle-orm";
 
-import { db } from "@/infra/database/client";
+import { db } from "@/infra/database/neon-client";
 import {
   categories,
   books,
@@ -27,7 +27,7 @@ export async function getBooksByCategory(categoryType: string | null) {
   const query: any = db
     .select({
       ...getTableColumns(books),
-      rate: sql<number>`avg(${avaliations.rate})`,
+      rate: avg(avaliations.rate),
     })
     .from(books)
     .leftJoin(categories_to_books, eq(books.id, categories_to_books.bookId))

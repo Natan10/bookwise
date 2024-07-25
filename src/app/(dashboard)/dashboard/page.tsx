@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { CaretRight, ChartLineUp } from "@phosphor-icons/react";
 
 import { BigBookCard } from "@/components/card/big-book-card";
@@ -11,6 +12,8 @@ import { Load } from "@/components/load";
 import { useGetLastReadBook } from "./hooks/useGetLastReadBook";
 import { useGetAvaliations } from "./hooks/useGetAvaliations";
 import { useGetMostReadBooks } from "./hooks/useGetMostReadBooks";
+
+import emptyBox from "@/assets/empty-box.png";
 
 export default function Dashboard() {
   const { data: session } = useSession();
@@ -70,7 +73,7 @@ export default function Dashboard() {
                   />
                 ) : (
                   <div>
-                    <span className="text-sm text-gray-200">
+                    <span className="text-xs text-gray-500">
                       Você ainda não possui nenhuma leitura...
                     </span>
                   </div>
@@ -90,10 +93,23 @@ export default function Dashboard() {
                   <Load />
                 </div>
               )}
-              {latestAvaliations &&
+              {latestAvaliations && latestAvaliations.length > 0 ? (
                 latestAvaliations.map((avaliation) => (
                   <AvatarCard key={avaliation.id} avaliation={avaliation} />
-                ))}
+                ))
+              ) : (
+                <div className="flex flex-col gap-2 justify-center items-center">
+                  <Image
+                    src={emptyBox}
+                    alt="emtpy-content"
+                    width={200}
+                    height={200}
+                  />
+                  <span className="text-xs text-gray-500">
+                    Nenhuma avaliação disponível...
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -118,7 +134,7 @@ export default function Dashboard() {
                 </span>
                 <Load />
               </div>
-            ) : popularBooks ? (
+            ) : popularBooks && popularBooks.length > 0 ? (
               popularBooks.map((book) => {
                 return (
                   <ShortBookCard
@@ -131,7 +147,13 @@ export default function Dashboard() {
                   />
                 );
               })
-            ) : null}
+            ) : (
+              <div>
+                <span className="text-xs text-gray-500">
+                  Nenhum livro encontrado...
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>

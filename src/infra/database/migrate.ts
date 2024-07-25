@@ -1,13 +1,17 @@
+import * as dotenv from "dotenv";
+import postgres from "postgres";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
-import { db, sql } from "./client";
+import { drizzle } from "drizzle-orm/postgres-js";
 
-migrate(db, { migrationsFolder: "src/infra/database/migrations" })
-  .then(() => {
-    console.log("Migrations applied!");
-    sql.end().then(() => {
-      console.log("Connection closed...");
-    });
-  })
-  .catch((e) => {
-    console.log("Erro ao aplicar migrations: ", e.message);
+dotenv.config();
+
+async function runMigration() {
+  const connectionString = process.env.CONNECTION_STRING;
+  const migrationClient = drizzle(postgres(connectionString!));
+
+  await migrate(migrationClient, {
+    migrationsFolder: "src/infra/database/migrations",
   });
+}
+
+await runMigration();

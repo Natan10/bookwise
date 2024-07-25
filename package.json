@@ -9,9 +9,11 @@
     "lint": "next lint",
     "generate": "npx drizzle-kit generate --",
     "migrate": "npx tsx ./src/infra/database/migrate.ts",
-    "studio": "npx drizzle-kit studio --config drizzle.config.ts"
+    "studio": "npx drizzle-kit studio --config drizzle.config.ts",
+    "seed": "npx tsx ./src/infra/database/seed.ts"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^0.9.4",
     "@phosphor-icons/react": "^2.0.15",
     "@tanstack/react-query": "^5.36.2",
     "date-fns": "^3.6.0",

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { User } from "@phosphor-icons/react";
 import { formatDistanceToNow } from "date-fns";
 import { useSession } from "next-auth/react";
@@ -11,6 +12,8 @@ import { ProfileInfo } from "./components/profile-info";
 import { Load } from "@/components/load";
 import { AvaliationBookProfileDto } from "./dtos/avaliation-book-profile-dto";
 import { useGetProfileBooks } from "./hooks/useGetProfileBooks";
+
+import emptyBox from "@/assets/empty-box.png";
 
 export default function Profile() {
   const { data: session } = useSession();
@@ -51,23 +54,37 @@ export default function Profile() {
               </div>
             )}
 
-            {filterBooks?.map((d) => {
-              const distance = formatDistanceToNow(d.createdAt!, {
-                addSuffix: true,
-              });
-              return (
-                <div className="space-y-2" key={d.id}>
-                  <span className="text-gray-300 text-sm">{distance}</span>
-                  <ProfileCard
-                    title={d.bookTitle!}
-                    author={d.bookAuthor!}
-                    comment={d.comment}
-                    coverImage={d.bookCover}
-                    rate={d.rate}
-                  />
-                </div>
-              );
-            })}
+            {filterBooks && filterBooks.length > 0 ? (
+              filterBooks.map((d: any) => {
+                const distance = formatDistanceToNow(d.createdAt!, {
+                  addSuffix: true,
+                });
+                return (
+                  <div className="space-y-2" key={d.id}>
+                    <span className="text-gray-300 text-sm">{distance}</span>
+                    <ProfileCard
+                      title={d.bookTitle!}
+                      author={d.bookAuthor!}
+                      comment={d.comment}
+                      coverImage={d.bookCover}
+                      rate={d.rate}
+                    />
+                  </div>
+                );
+              })
+            ) : (
+              <div className="flex flex-col gap-2 justify-center items-center">
+                <Image
+                  src={emptyBox}
+                  alt="emtpy-content"
+                  width={180}
+                  height={180}
+                />
+                <span className="text-xs text-gray-500">
+                  Nenhum livro encontrado...
+                </span>
+              </div>
+            )}
           </div>
         </div>
 

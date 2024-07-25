@@ -1,5 +1,5 @@
 import { Explorer } from "./components/explorer";
-import { db } from "@/infra/database/client";
+import { db } from "@/infra/database/neon-client";
 
 export default async function Explorar() {
   const categories = await getCategories();
