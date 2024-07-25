@@ -1,12 +1,9 @@
-import * as dotenv from "dotenv";
 import postgres from "postgres";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
 import { drizzle } from "drizzle-orm/postgres-js";
 
-dotenv.config();
-
 async function runMigration() {
-  const connectionString = process.env.CONNECTION_STRING;
+  const connectionString = process.env.DATABASE_URL;
   const migrationClient = drizzle(postgres(connectionString!));
 
   await migrate(migrationClient, {
@@ -14,4 +11,4 @@ async function runMigration() {
   });
 }
 
-await runMigration();
+runMigration().then(() => console.log("Migrations done"));
