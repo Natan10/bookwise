@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { Session } from 'next-auth';
+
 import { getProfileInfoStats } from '../_actions';
 
 export function useGetProfileInfo({ session }: { session: Session | null }) {

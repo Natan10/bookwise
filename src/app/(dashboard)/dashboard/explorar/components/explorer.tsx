@@ -1,16 +1,17 @@
 'use client';
 
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { Binoculars } from '@phosphor-icons/react';
+import { useQuery } from '@tanstack/react-query';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
 
-import { Input } from '@/components/input';
-import { Tag } from '@/components/tag';
 import { ShortBookCard } from '@/components/card/short-book-card';
-import { Category } from '@/models/category/category';
-import { Load } from '@/components/load';
 import { CommentSection } from '@/components/comment/comment-section';
+import { Input } from '@/components/input';
+import { Load } from '@/components/load';
+import { Tag } from '@/components/tag';
+import { Category } from '@/models/category/category';
+
 import { getBooksByCategory } from '../_actions';
 
 type ExplorerProps = {

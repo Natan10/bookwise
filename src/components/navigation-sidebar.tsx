@@ -1,11 +1,11 @@
 'use client';
 
-import { ElementType } from 'react';
+import { Binoculars, ChartLineUp, SignOut, User } from '@phosphor-icons/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useSession, signOut } from 'next-auth/react';
 import { usePathname, useRouter } from 'next/navigation';
-import { Binoculars, ChartLineUp, SignOut, User } from '@phosphor-icons/react';
+import { signOut, useSession } from 'next-auth/react';
+import { ElementType } from 'react';
 
 import bookHeart from '@/assets/icons/book-heart.svg';
 

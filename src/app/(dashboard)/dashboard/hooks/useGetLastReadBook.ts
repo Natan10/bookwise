@@ -1,5 +1,5 @@
-import { Session } from 'next-auth';
 import { useQuery } from '@tanstack/react-query';
+import { Session } from 'next-auth';
 
 import { getLastBookRead } from '../_actions';
 
@@ -14,6 +14,7 @@ export function useGetLastReadBook({ session }: UseGetLastReadBookProps) {
     queryKey: [key, session?.user?.email],
     queryFn: async () => {
       if (!session || !session.user) return null;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
       const data = await getLastBookRead({ email: session?.user.email! });
       return data;
     },
@@ -21,6 +22,7 @@ export function useGetLastReadBook({ session }: UseGetLastReadBookProps) {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     refetchOnMount: false,
+    retry: false,
   });
 
   return { data, isLoading };

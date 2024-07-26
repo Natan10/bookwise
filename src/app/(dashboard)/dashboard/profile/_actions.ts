@@ -1,15 +1,16 @@
 'use server';
 
-import { db } from '@/infra/database/client';
 import { getYear } from 'date-fns';
+import { count, desc, eq, getTableColumns, sql, sum } from 'drizzle-orm';
+
+import { db } from '@/infra/database/neon-client';
 import {
   avaliations,
-  profiles,
   books,
   categories,
   categories_to_books,
+  profiles,
 } from '@/infra/database/schema';
-import { count, desc, eq, getTableColumns, sql, sum } from 'drizzle-orm';
 
 import { AvaliationBookProfileDto } from './dtos/avaliation-book-profile-dto';
 import { ProfileStatsDto } from './dtos/profile-stats-dto';

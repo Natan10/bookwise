@@ -1,7 +1,8 @@
-import { BookOpen, BookmarkSimple, Books, UserList } from '@phosphor-icons/react';
+import { BookmarkSimple, BookOpen, Books, UserList } from '@phosphor-icons/react';
 import { useSession } from 'next-auth/react';
 
 import { AvatarPhoto } from '@/components/avatar';
+
 import { useGetProfileInfo } from '../hooks/useGetProfileInfo';
 
 export function ProfileInfo() {

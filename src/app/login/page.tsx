@@ -4,12 +4,11 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 
-import { SocialLoginButton } from '@/components/buttons/social-login-btn';
-
-import login from '@/assets/login.svg';
 import github from '@/assets/icons/github.svg';
 import google from '@/assets/icons/google.svg';
 import rocket from '@/assets/icons/rocket.svg';
+import login from '@/assets/login.svg';
+import { SocialLoginButton } from '@/components/buttons/social-login-btn';
 
 export default function Login() {
   const router = useRouter();

@@ -4,14 +4,15 @@ import { and, avg, eq, getTableColumns, sql } from 'drizzle-orm';
 
 import { db } from '@/infra/database/neon-client';
 import {
-  categories,
-  books,
-  categories_to_books,
   avaliations,
+  books,
+  categories,
+  categories_to_books,
   profiles,
 } from '@/infra/database/schema';
-import { BookWithRateDto } from './dtos/book-rate-dto';
+
 import { BookInfoDto } from './dtos/book-info-dto';
+import { BookWithRateDto } from './dtos/book-rate-dto';
 
 export async function getBooksByCategory(categoryType: string | null) {
   let categoryId: number | null = null;
@@ -70,7 +71,7 @@ export async function getBookById(bookId: number) {
 
   if (!book) throw new Error('Book not found');
 
-  let categoryTypes = await Promise.all(
+  const categoryTypes = await Promise.all(
     book.categories.map(async (e) => {
       const category = await db.query.categories.findFirst({
         where: (categories, { eq }) => eq(categories.id, e.categoryId),
