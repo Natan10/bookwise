@@ -1,4 +1,4 @@
-import { Avaliation } from "@/models/avaliation";
+import { Avaliation } from '@/models/avaliation';
 
 export type LastAvaliationDto = Avaliation & {
   book: {

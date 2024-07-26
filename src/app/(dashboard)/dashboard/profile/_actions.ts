@@ -1,25 +1,25 @@
-"use server";
+'use server';
 
-import { db } from "@/infra/database/client";
-import { getYear } from "date-fns";
+import { db } from '@/infra/database/client';
+import { getYear } from 'date-fns';
 import {
   avaliations,
   profiles,
   books,
   categories,
   categories_to_books,
-} from "@/infra/database/schema";
-import { count, desc, eq, getTableColumns, sql, sum } from "drizzle-orm";
+} from '@/infra/database/schema';
+import { count, desc, eq, getTableColumns, sql, sum } from 'drizzle-orm';
 
-import { AvaliationBookProfileDto } from "./dtos/avaliation-book-profile-dto";
-import { ProfileStatsDto } from "./dtos/profile-stats-dto";
+import { AvaliationBookProfileDto } from './dtos/avaliation-book-profile-dto';
+import { ProfileStatsDto } from './dtos/profile-stats-dto';
 
 export async function getProfileBooks({ email }: { email: string }) {
   const profile = await db.query.profiles.findFirst({
     where: eq(profiles.email, email),
   });
 
-  if (!profile) throw new Error("Profile does not exist");
+  if (!profile) throw new Error('Profile does not exist');
 
   const reviewedBooks = await db
     .select({
@@ -40,14 +40,12 @@ export async function getProfileInfoStats({ email }: { email: string }) {
     where: eq(profiles.email, email),
   });
 
-  if (!profile) throw new Error("Profile does not exist");
+  if (!profile) throw new Error('Profile does not exist');
 
   const stats = await db
     .select({
       totalPagesRead: sum(books.numOfPages),
-      distinctAuthors: sql<number>`count(distinct ${books.author})`.as(
-        "distinct_authors"
-      ),
+      distinctAuthors: sql<number>`count(distinct ${books.author})`.as('distinct_authors'),
       readBooks: count(),
     })
     .from(books)
@@ -57,7 +55,7 @@ export async function getProfileInfoStats({ email }: { email: string }) {
   const categoryStats = await db
     .select({
       categoryName: categories.type,
-      readCount: sql<number>`count(*)`.as("read_count"),
+      readCount: sql<number>`count(*)`.as('read_count'),
     })
     .from(avaliations)
     .innerJoin(books, eq(avaliations.bookId, books.id))

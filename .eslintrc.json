@@ -4,9 +4,10 @@
     "next/core-web-vitals",
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended", 
-    "prettier"],
-  "plugins": ["simple-import-sort"],
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "plugins": ["react", "simple-import-sort", "@typescript-eslint"],
   "rules": {
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error"

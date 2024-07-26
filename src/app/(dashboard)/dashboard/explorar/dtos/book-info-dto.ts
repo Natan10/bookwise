@@ -1,5 +1,5 @@
-import { Book } from "@/models/book/book";
-import { Avaliation } from "@/models/avaliation";
+import { Book } from '@/models/book/book';
+import { Avaliation } from '@/models/avaliation';
 
 export type BookInfoDto = Book & {
   average: number;

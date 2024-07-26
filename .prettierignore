@@ -1,0 +1,8 @@
+node_modules
+tsconfig.json
+next.config.mjs
+.gitignore
+.env.*
+.next
+public
+.editorconfig

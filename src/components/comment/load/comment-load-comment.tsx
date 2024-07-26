@@ -1,10 +1,3 @@
 export function CommentLoadComment() {
-  return (
-    <div
-      className={`
-      w-full h-16
-        rounded-[10px] bg-gray-400
-        `}
-    />
-  );
+  return <div className={`h-16 w-full rounded-[10px] bg-gray-400`} />;
 }

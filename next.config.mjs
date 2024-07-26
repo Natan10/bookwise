@@ -5,17 +5,17 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'github.com',
-        port: ''  
+        port: '',
       },
       {
-        hostname: 'avatars.githubusercontent.com'
+        hostname: 'avatars.githubusercontent.com',
       },
       {
-        hostname: 'doodleipsum.com'
+        hostname: 'doodleipsum.com',
       },
       {
-        hostname: 'lh3.googleusercontent.com'
-      }
+        hostname: 'lh3.googleusercontent.com',
+      },
     ],
   },
 };

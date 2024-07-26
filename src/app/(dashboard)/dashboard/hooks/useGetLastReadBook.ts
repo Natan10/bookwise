@@ -1,13 +1,13 @@
-import { Session } from "next-auth";
-import { useQuery } from "@tanstack/react-query";
+import { Session } from 'next-auth';
+import { useQuery } from '@tanstack/react-query';
 
-import { getLastBookRead } from "../_actions";
+import { getLastBookRead } from '../_actions';
 
 type UseGetLastReadBookProps = {
   session: Session | null;
 };
 
-const key = "main-stats-last-read";
+const key = 'main-stats-last-read';
 
 export function useGetLastReadBook({ session }: UseGetLastReadBookProps) {
   const { data, isLoading } = useQuery({

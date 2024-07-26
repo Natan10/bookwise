@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Toaster } from "react-hot-toast";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactNode } from "react";
+import { Toaster } from 'react-hot-toast';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactNode } from 'react';
 
 export function QueryProvider({ children }: { children: ReactNode }) {
   const queryClient = new QueryClient();

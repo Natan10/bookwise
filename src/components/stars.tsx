@@ -1,4 +1,4 @@
-import { Star } from "@phosphor-icons/react";
+import { Star } from '@phosphor-icons/react';
 
 export function Stars({ rate }: { rate: number }) {
   const stars = new Array(5);
@@ -15,10 +15,10 @@ export function Stars({ rate }: { rate: number }) {
     <div className="flex items-center gap-[5px]">
       {stars.map((star, i) =>
         star === 1 ? (
-          <Star key={i} size={14} weight={"fill"} className="text-purple-100" />
+          <Star key={i} size={14} weight={'fill'} className="text-purple-100" />
         ) : (
           <Star key={i} size={14} color="#8381D9" />
-        )
+        ),
       )}
     </div>
   );

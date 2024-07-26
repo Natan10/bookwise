@@ -1,17 +1,17 @@
-"use server";
+'use server';
 
-import { and, avg, eq, getTableColumns, sql } from "drizzle-orm";
+import { and, avg, eq, getTableColumns, sql } from 'drizzle-orm';
 
-import { db } from "@/infra/database/neon-client";
+import { db } from '@/infra/database/neon-client';
 import {
   categories,
   books,
   categories_to_books,
   avaliations,
   profiles,
-} from "@/infra/database/schema";
-import { BookWithRateDto } from "./dtos/book-rate-dto";
-import { BookInfoDto } from "./dtos/book-info-dto";
+} from '@/infra/database/schema';
+import { BookWithRateDto } from './dtos/book-rate-dto';
+import { BookInfoDto } from './dtos/book-info-dto';
 
 export async function getBooksByCategory(categoryType: string | null) {
   let categoryId: number | null = null;
@@ -20,7 +20,7 @@ export async function getBooksByCategory(categoryType: string | null) {
     const category = await db.query.categories.findFirst({
       where: eq(categories.type, categoryType),
     });
-    if (!category) throw new Error("Category not found");
+    if (!category) throw new Error('Category not found');
     categoryId = category.id;
   }
 
@@ -68,7 +68,7 @@ export async function getBookById(bookId: number) {
     },
   });
 
-  if (!book) throw new Error("Book not found");
+  if (!book) throw new Error('Book not found');
 
   let categoryTypes = await Promise.all(
     book.categories.map(async (e) => {
@@ -76,17 +76,15 @@ export async function getBookById(bookId: number) {
         where: (categories, { eq }) => eq(categories.id, e.categoryId),
       });
       if (category) return category.type;
-      return "";
-    })
+      return '';
+    }),
   );
 
   const [bookAverage] = await db
     .select({ averageRate: sql`avg(${avaliations.rate})` })
     .from(avaliations)
     .where(eq(avaliations.bookId, book.id));
-  const average = bookAverage.averageRate
-    ? (bookAverage.averageRate as number)
-    : 0;
+  const average = bookAverage.averageRate ? (bookAverage.averageRate as number) : 0;
 
   const data: BookInfoDto = {
     ...book,
@@ -114,7 +112,7 @@ export async function addComment({
 }) {
   await db.transaction(async (tx) => {
     if (!profile) {
-      throw new Error("User not exist");
+      throw new Error('User not exist');
     }
 
     // check profile
@@ -138,9 +136,9 @@ export async function addComment({
       where: (books, { eq }) => eq(books.id, bookId),
     });
 
-    if (!book) throw new Error("Book not found");
-    if (rate < 0) throw new Error("Rate not allowed");
-    if (!comment) throw new Error("Comment not allowed");
+    if (!book) throw new Error('Book not found');
+    if (rate < 0) throw new Error('Rate not allowed');
+    if (!comment) throw new Error('Comment not allowed');
 
     const avaliationComment = await tx.query.avaliations.findFirst({
       where: (avaliations, { eq }) => eq(avaliations.profileId, record.id),
@@ -149,12 +147,7 @@ export async function addComment({
     if (avaliationComment) {
       await tx
         .delete(avaliations)
-        .where(
-          and(
-            eq(avaliations.bookId, book.id),
-            eq(avaliations.profileId, record.id)
-          )
-        );
+        .where(and(eq(avaliations.bookId, book.id), eq(avaliations.profileId, record.id)));
     }
 
     await tx.insert(avaliations).values({

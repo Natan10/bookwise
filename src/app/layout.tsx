@@ -1,18 +1,18 @@
-import type { Metadata } from "next";
-import { Nunito_Sans } from "next/font/google";
-import { SessionContext } from "@/contexts/session-provider";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Nunito_Sans } from 'next/font/google';
+import { SessionContext } from '@/contexts/session-provider';
+import './globals.css';
 
 const nunito = Nunito_Sans({
-  subsets: ["latin"],
-  style: ["normal"],
-  weight: ["400", "500", "700"],
-  variable: "--font-nsans",
+  subsets: ['latin'],
+  style: ['normal'],
+  weight: ['400', '500', '700'],
+  variable: '--font-nsans',
 });
 
 export const metadata: Metadata = {
-  title: "Bookwise",
-  description: "Booking for books",
+  title: 'Bookwise',
+  description: 'Booking for books',
 };
 
 export default function RootLayout({

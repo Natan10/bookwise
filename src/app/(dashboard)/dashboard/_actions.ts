@@ -1,19 +1,19 @@
-"use server";
+'use server';
 
-import { avg, desc, eq, getTableColumns } from "drizzle-orm";
+import { avg, desc, eq, getTableColumns } from 'drizzle-orm';
 
-import { LastAvaliationDto } from "@/app/(dashboard)/dashboard/dtos/last-avaliation-dto";
-import { LastBookReadInfoDto } from "@/app/(dashboard)/dashboard/dtos/last-book-read-info-dto";
-import { PopularBookDto } from "@/app/(dashboard)/dashboard/dtos/popular-book-dto";
-import { db } from "@/infra/database/neon-client";
-import { avaliations, books, profiles } from "@/infra/database/schema";
+import { LastAvaliationDto } from '@/app/(dashboard)/dashboard/dtos/last-avaliation-dto';
+import { LastBookReadInfoDto } from '@/app/(dashboard)/dashboard/dtos/last-book-read-info-dto';
+import { PopularBookDto } from '@/app/(dashboard)/dashboard/dtos/popular-book-dto';
+import { db } from '@/infra/database/neon-client';
+import { avaliations, books, profiles } from '@/infra/database/schema';
 
 export async function getLastBookRead({ email }: { email: string }) {
   const profile = await db.query.profiles.findFirst({
     where: eq(profiles.email, email),
   });
 
-  if (!profile) throw new Error("Profile does not exist");
+  if (!profile) throw new Error('Profile does not exist');
 
   const [content] = await db
     .select({

@@ -1,10 +1,3 @@
 export function CommentLoadCard() {
-  return (
-    <div
-      className={`
-      w-full h-80
-        rounded-[10px] bg-gray-400
-        `}
-    />
-  );
+  return <div className={`h-80 w-full rounded-[10px] bg-gray-400`} />;
 }

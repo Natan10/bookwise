@@ -1,6 +1,6 @@
-import Image from "next/image";
-import { Stars } from "../stars";
-import bannerBook from "@/assets/banner_book.svg";
+import Image from 'next/image';
+import { Stars } from '../stars';
+import bannerBook from '@/assets/banner_book.svg';
 
 type ProfileCardProps = {
   coverImage: string | null;
@@ -10,29 +10,23 @@ type ProfileCardProps = {
   comment: string;
 };
 
-export function ProfileCard({
-  author,
-  comment,
-  coverImage,
-  rate,
-  title,
-}: ProfileCardProps) {
+export function ProfileCard({ author, comment, coverImage, rate, title }: ProfileCardProps) {
   return (
-    <div className="max-h-[360px] p-6 rounded-lg bg-gray-600 transition-all">
+    <div className="max-h-[360px] rounded-lg bg-gray-600 p-6 transition-all">
       <div className="grid grid-cols-[auto_1fr_1fr] gap-6">
-        <div className="rounded overflow-hidden">
+        <div className="overflow-hidden rounded">
           <Image
             src={coverImage ?? bannerBook}
             alt="livro"
             width={108}
             height={152}
-            style={{ objectFit: "contain", overflow: "hidden" }}
+            style={{ objectFit: 'contain', overflow: 'hidden' }}
           />
         </div>
         <div className="col-span-2">
           <div className="flex flex-col gap-[2px]">
-            <p className="text-gray-100 text-lg font-bold">{title}</p>
-            <span className="text-gray-400 text-sm">{author}</span>
+            <p className="text-lg font-bold text-gray-100">{title}</p>
+            <span className="text-sm text-gray-400">{author}</span>
           </div>
           <div className="mx-auto">
             <Stars rate={rate} />
