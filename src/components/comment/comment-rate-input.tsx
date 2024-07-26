@@ -1,4 +1,4 @@
-import { Star } from "@phosphor-icons/react";
+import { Star } from '@phosphor-icons/react';
 
 const MAX_RATE = 5;
 
@@ -28,11 +28,7 @@ export function CommentRateInput({
           );
         }
         return (
-          <button
-            className="outline-none"
-            key={index}
-            onClick={() => setRate(index + 1)}
-          >
+          <button className="outline-none" key={index} onClick={() => setRate(index + 1)}>
             <Star size={iconSize} className="text-purple-100" />
           </button>
         );

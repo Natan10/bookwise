@@ -1,38 +1,37 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useSession } from "next-auth/react";
-import Image from "next/image";
-import { CaretRight, ChartLineUp } from "@phosphor-icons/react";
+import { CaretRight, ChartLineUp } from '@phosphor-icons/react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
-import { BigBookCard } from "@/components/card/big-book-card";
-import { AvatarCard } from "@/components/card/avatar-card";
-import { ShortBookCard } from "@/components/card/short-book-card";
-import { Load } from "@/components/load";
-import { useGetLastReadBook } from "./hooks/useGetLastReadBook";
-import { useGetAvaliations } from "./hooks/useGetAvaliations";
-import { useGetMostReadBooks } from "./hooks/useGetMostReadBooks";
+import emptyBox from '@/assets/empty-box.png';
+import { AvatarCard } from '@/components/card/avatar-card';
+import { BigBookCard } from '@/components/card/big-book-card';
+import { ShortBookCard } from '@/components/card/short-book-card';
+import { Load } from '@/components/load';
 
-import emptyBox from "@/assets/empty-box.png";
+import { useGetAvaliations } from './hooks/useGetAvaliations';
+import { useGetLastReadBook } from './hooks/useGetLastReadBook';
+import { useGetMostReadBooks } from './hooks/useGetMostReadBooks';
 
 export default function Dashboard() {
   const { data: session } = useSession();
 
-  const { data: latestReadBook, isLoading: isLoadingLatestReadBook } =
-    useGetLastReadBook({ session });
+  const { data: latestReadBook, isLoading: isLoadingLatestReadBook } = useGetLastReadBook({
+    session,
+  });
 
-  const { data: latestAvaliations, isLoading: isLoadingLatestAvaliations } =
-    useGetAvaliations();
+  const { data: latestAvaliations, isLoading: isLoadingLatestAvaliations } = useGetAvaliations();
 
-  const { data: popularBooks, isLoading: isLoadingPopularBooks } =
-    useGetMostReadBooks();
+  const { data: popularBooks, isLoading: isLoadingPopularBooks } = useGetMostReadBooks();
 
   return (
-    <section className="px-[76px] pt-12 pb-7">
+    <section className="px-[76px] pb-7 pt-12">
       <header>
         <div className="flex items-center gap-3">
           <ChartLineUp size={32} className="text-green-100" />
-          <h1 className="text-gray-100 text-2xl font-bold">Inicio</h1>
+          <h1 className="text-2xl font-bold text-gray-100">Inicio</h1>
         </div>
       </header>
       <div className="relative mt-10 grid grid-cols-3 gap-16">
@@ -40,24 +39,17 @@ export default function Dashboard() {
           {/* first header */}
           {session && (
             <>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-100">
-                  Sua última leitura
-                </span>
-                <Link
-                  href={"/dashboard/explorar"}
-                  className="flex items-center gap-2"
-                >
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-100">Sua última leitura</span>
+                <Link href={'/dashboard/explorar'} className="flex items-center gap-2">
                   <span className="text-sm text-purple-100">Ver todas</span>
                   <CaretRight size={16} className="text-purple-100" />
                 </Link>
               </div>
-              <div className="mt-4 mb-10">
+              <div className="mb-10 mt-4">
                 {isLoadingLatestReadBook ? (
-                  <div className="p-10 w-full flex justify-center items-center gap-2">
-                    <span className="text-sm text-gray-200">
-                      Carregando último livro lido...
-                    </span>
+                  <div className="flex w-full items-center justify-center gap-2 p-10">
+                    <span className="text-sm text-gray-200">Carregando último livro lido...</span>
                     <Load />
                   </div>
                 ) : latestReadBook ? (
@@ -86,10 +78,8 @@ export default function Dashboard() {
             <p className="text-sm text-gray-100">Avaliações mais recentes</p>
             <div className="space-y-3">
               {isLoadingLatestAvaliations && (
-                <div className="p-10 w-full flex justify-center items-center gap-2">
-                  <span className="text-sm text-gray-200">
-                    Carregando últimas avaliações..
-                  </span>
+                <div className="flex w-full items-center justify-center gap-2 p-10">
+                  <span className="text-sm text-gray-200">Carregando últimas avaliações..</span>
                   <Load />
                 </div>
               )}
@@ -98,16 +88,9 @@ export default function Dashboard() {
                   <AvatarCard key={avaliation.id} avaliation={avaliation} />
                 ))
               ) : (
-                <div className="flex flex-col gap-2 justify-center items-center">
-                  <Image
-                    src={emptyBox}
-                    alt="emtpy-content"
-                    width={200}
-                    height={200}
-                  />
-                  <span className="text-xs text-gray-500">
-                    Nenhuma avaliação disponível...
-                  </span>
+                <div className="flex flex-col items-center justify-center gap-2">
+                  <Image src={emptyBox} alt="emtpy-content" width={200} height={200} />
+                  <span className="text-xs text-gray-500">Nenhuma avaliação disponível...</span>
                 </div>
               )}
             </div>
@@ -118,20 +101,15 @@ export default function Dashboard() {
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-100">Livros populares</span>
-            <Link
-              href={"/dashboard/explorar"}
-              className="flex items-center gap-2"
-            >
+            <Link href={'/dashboard/explorar'} className="flex items-center gap-2">
               <span className="text-sm text-purple-100">Ver todas</span>
               <CaretRight size={16} className="text-purple-100" />
             </Link>
           </div>
-          <div className="sticky top-0 pt-3 space-y-3">
+          <div className="sticky top-0 space-y-3 pt-3">
             {isLoadingPopularBooks ? (
-              <div className="p-10 w-full flex justify-center items-center gap-2">
-                <span className="text-sm text-gray-200">
-                  Carregando livros populares...
-                </span>
+              <div className="flex w-full items-center justify-center gap-2 p-10">
+                <span className="text-sm text-gray-200">Carregando livros populares...</span>
                 <Load />
               </div>
             ) : popularBooks && popularBooks.length > 0 ? (
@@ -149,9 +127,7 @@ export default function Dashboard() {
               })
             ) : (
               <div>
-                <span className="text-xs text-gray-500">
-                  Nenhum livro encontrado...
-                </span>
+                <span className="text-xs text-gray-500">Nenhum livro encontrado...</span>
               </div>
             )}
           </div>

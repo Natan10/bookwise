@@ -1,34 +1,34 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Binoculars } from "@phosphor-icons/react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { Binoculars } from '@phosphor-icons/react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { Input } from "@/components/input";
-import { Tag } from "@/components/tag";
-import { ShortBookCard } from "@/components/card/short-book-card";
-import { Category } from "@/models/category/category";
-import { Load } from "@/components/load";
-import { CommentSection } from "@/components/comment/comment-section";
-import { getBooksByCategory } from "../_actions";
+import { Input } from '@/components/input';
+import { Tag } from '@/components/tag';
+import { ShortBookCard } from '@/components/card/short-book-card';
+import { Category } from '@/models/category/category';
+import { Load } from '@/components/load';
+import { CommentSection } from '@/components/comment/comment-section';
+import { getBooksByCategory } from '../_actions';
 
 type ExplorerProps = {
   categories: Category[];
 };
 
 export function Explorer({ categories }: ExplorerProps) {
-  const [searchBookTerm, setSearchBookTerm] = useState("");
+  const [searchBookTerm, setSearchBookTerm] = useState('');
   const [bookId, setBookId] = useState<number | null>(null);
 
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
-  const categoryType = searchParams.get("category");
+  const categoryType = searchParams.get('category');
 
   const { data: books, isLoading } = useQuery({
-    queryKey: ["books_by_category", categoryType],
+    queryKey: ['books_by_category', categoryType],
     queryFn: async () => {
       const books = await getBooksByCategory(categoryType);
       return books;
@@ -41,30 +41,24 @@ export function Explorer({ categories }: ExplorerProps) {
       return;
     }
     const urlParams = new URLSearchParams();
-    urlParams.set("category", category);
+    urlParams.set('category', category);
     router.push(`${pathname}?${urlParams.toString()}`);
   }
 
   const filterBooks = books?.filter((book: any) => {
-    if (book.author.toUpperCase().includes(searchBookTerm.toUpperCase()))
-      return book;
-    if (book.description?.toUpperCase().includes(searchBookTerm.toUpperCase()))
-      return book;
-    if (book.title.toUpperCase().includes(searchBookTerm.toUpperCase()))
-      return book;
+    if (book.author.toUpperCase().includes(searchBookTerm.toUpperCase())) return book;
+    if (book.description?.toUpperCase().includes(searchBookTerm.toUpperCase())) return book;
+    if (book.title.toUpperCase().includes(searchBookTerm.toUpperCase())) return book;
   });
 
   return (
-    <section className="px-[76px] pt-12 pb-7">
+    <section className="px-[76px] pb-7 pt-12">
       <header className="grid grid-cols-2">
         <div className="flex items-center gap-3">
           <Binoculars size={32} className="text-green-100" />
-          <h1 className="text-gray-100 text-2xl font-bold">Explorar</h1>
+          <h1 className="text-2xl font-bold text-gray-100">Explorar</h1>
         </div>
-        <Input
-          placeholder="explorar"
-          onChange={(e) => setSearchBookTerm(e.target.value)}
-        />
+        <Input placeholder="explorar" onChange={(e) => setSearchBookTerm(e.target.value)} />
       </header>
 
       <div className="mt-10 flex items-center gap-3">
@@ -79,7 +73,7 @@ export function Explorer({ categories }: ExplorerProps) {
       </div>
 
       {isLoading && (
-        <div className="w-full h-screen flex justify-center items-center gap-3">
+        <div className="flex h-screen w-full items-center justify-center gap-3">
           <span className="text-sm text-gray-200">Carregando...</span>
           <Load />
         </div>

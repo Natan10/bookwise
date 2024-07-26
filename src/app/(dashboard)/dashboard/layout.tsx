@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
+
 import { NavigationSidebar } from "@/components/navigation-sidebar";
-import { QueryProvider } from "@/contexts/query-context";
 import { Redirect } from "@/components/redirect";
+import { QueryProvider } from "@/contexts/query-context";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (

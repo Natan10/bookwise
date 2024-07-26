@@ -1,30 +1,21 @@
-import { useState } from "react";
-import toast from "react-hot-toast";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
 
-import * as Components from "./index";
-import {
-  addComment,
-  getBookById,
-} from "@/app/(dashboard)/dashboard/explorar/_actions";
-import { CommentCardDto } from "./dtos/comment-card-dto";
-import { Modal } from "../modal";
+import * as Components from './index';
+import { addComment, getBookById } from '@/app/(dashboard)/dashboard/explorar/_actions';
+import { CommentCardDto } from './dtos/comment-card-dto';
+import { Modal } from '../modal';
 
-export function CommentSection({
-  bookId,
-  close,
-}: {
-  bookId: number | null;
-  close: () => void;
-}) {
+export function CommentSection({ bookId, close }: { bookId: number | null; close: () => void }) {
   const [shouldShowLoginModal, setShouldShowLoginModal] = useState(false);
 
   const queryClient = useQueryClient();
   const { data: session } = useSession();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["book_informations", bookId],
+    queryKey: ['book_informations', bookId],
     queryFn: async () => {
       if (!bookId) return null;
       const book = await getBookById(bookId);
@@ -54,13 +45,7 @@ export function CommentSection({
     })) as CommentCardDto[]);
 
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: async ({
-      comment,
-      rate,
-    }: {
-      comment: string;
-      rate: number;
-    }) => {
+    mutationFn: async ({ comment, rate }: { comment: string; rate: number }) => {
       if (!bookId) return null;
       await addComment({
         bookId: bookId,
@@ -78,13 +63,13 @@ export function CommentSection({
     onError: (e) => toast.error(e.message),
     onSuccess: async () => {
       await queryClient.refetchQueries({
-        queryKey: ["book_informations", bookId],
-        type: "active",
+        queryKey: ['book_informations', bookId],
+        type: 'active',
         exact: true,
       });
       await queryClient.invalidateQueries({
-        queryKey: ["books_by_category"],
-        type: "all",
+        queryKey: ['books_by_category'],
+        type: 'all',
       });
     },
   });
@@ -95,7 +80,7 @@ export function CommentSection({
       rate,
     });
     await queryClient.refetchQueries({
-      queryKey: ["book_informations", bookId],
+      queryKey: ['book_informations', bookId],
       exact: true,
     });
   }
@@ -117,7 +102,7 @@ export function CommentSection({
       )}
       {isLoading && <Components.CommentLoadCard />}
 
-      <div className="space-y-3 mt-11">
+      <div className="mt-11 space-y-3">
         {!isLoading && (
           <>
             {!session && (
@@ -135,9 +120,7 @@ export function CommentSection({
           </>
         )}
 
-        {comments && (
-          <Components.CommentAvaliationContainer comments={comments} />
-        )}
+        {comments && <Components.CommentAvaliationContainer comments={comments} />}
 
         {isLoading && (
           <div className="mt-3 space-y-3">
@@ -148,9 +131,7 @@ export function CommentSection({
         )}
       </div>
 
-      {shouldShowLoginModal && (
-        <Modal close={() => setShouldShowLoginModal(false)} />
-      )}
+      {shouldShowLoginModal && <Modal close={() => setShouldShowLoginModal(false)} />}
     </Components.CommentRoot>
   );
 }

@@ -1,8 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from '@tanstack/react-query';
 
-import { getLatestAvaliations } from "../_actions";
+import { getLatestAvaliations } from '../_actions';
 
-const key = "main-stats-avaliations";
+const key = 'main-stats-avaliations';
 
 export function useGetAvaliations() {
   const { data, isLoading } = useQuery({

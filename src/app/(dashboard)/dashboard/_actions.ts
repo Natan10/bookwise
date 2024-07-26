@@ -2,11 +2,11 @@
 
 import { avg, desc, eq, getTableColumns } from "drizzle-orm";
 
-import { avaliations, books, profiles } from "@/infra/database/schema";
-import { db } from "@/infra/database/neon-client";
 import { LastAvaliationDto } from "@/app/(dashboard)/dashboard/dtos/last-avaliation-dto";
 import { LastBookReadInfoDto } from "@/app/(dashboard)/dashboard/dtos/last-book-read-info-dto";
 import { PopularBookDto } from "@/app/(dashboard)/dashboard/dtos/popular-book-dto";
+import { db } from "@/infra/database/neon-client";
+import { avaliations, books, profiles } from "@/infra/database/schema";
 
 export async function getLastBookRead({ email }: { email: string }) {
   const profile = await db.query.profiles.findFirst({

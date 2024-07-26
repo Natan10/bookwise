@@ -1,8 +1,8 @@
-import Image from "next/image";
-import { BookOpen, BookmarkSimple } from "@phosphor-icons/react";
+import Image from 'next/image';
+import { BookOpen, BookmarkSimple } from '@phosphor-icons/react';
 
-import { Stars } from "../stars";
-import bannerBook from "@/assets/banner_book.svg";
+import { Stars } from '../stars';
+import bannerBook from '@/assets/banner_book.svg';
 
 type CommentBookCardProps = {
   categories: string[];
@@ -22,39 +22,35 @@ export function CommentBookCard({
   pages,
 }: CommentBookCardProps) {
   return (
-    <div className="px-6 py-4 rounded-[10px] bg-gray-600 border hover:border-gray-600 transition-all">
+    <div className="rounded-[10px] border bg-gray-600 px-6 py-4 transition-all hover:border-gray-600">
       <div className="grid grid-cols-[auto_1fr_1fr] gap-8">
-        <div className="rounded overflow-hidden">
+        <div className="overflow-hidden rounded">
           <Image
             src={bookImage ?? bannerBook}
             alt={`${title}`}
             width={142}
             height={200}
-            style={{ objectFit: "cover" }}
+            style={{ objectFit: 'cover' }}
           />
         </div>
         <div className="col-span-2 flex flex-col">
           <div className="flex flex-col gap-2">
-            <p className="text-gray-100 text-base font-bold truncate">
-              {title}
-            </p>
+            <p className="truncate text-base font-bold text-gray-100">{title}</p>
             <p className="text-sm text-gray-400">{author}</p>
           </div>
 
           <div className="mt-auto flex flex-col gap-1">
             <Stars rate={rate || 0} />
-            <span className="text-gray-400 text-xs">
-              {rate || 0} avaliações
-            </span>
+            <span className="text-xs text-gray-400">{rate || 0} avaliações</span>
           </div>
         </div>
       </div>
-      <div className="mt-8 p-6 flex justify-between items-center border-t border-t-gray-500">
+      <div className="mt-8 flex items-center justify-between border-t border-t-gray-500 p-6">
         <div className="flex items-center gap-4">
           <BookmarkSimple size={24} className="text-green-100" />
           <div className="flex flex-col">
             <span className="text-sm text-gray-300">Categoria</span>
-            <span className="text-gray-200">{categories.join(", ")}</span>
+            <span className="text-gray-200">{categories.join(', ')}</span>
           </div>
         </div>
 

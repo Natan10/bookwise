@@ -1,11 +1,7 @@
-import { CommentAvaliationCard } from "./comment-avaliation-card";
-import { CommentCardDto } from "./dtos/comment-card-dto";
+import { CommentAvaliationCard } from './comment-avaliation-card';
+import { CommentCardDto } from './dtos/comment-card-dto';
 
-export function CommentAvaliationContainer({
-  comments,
-}: {
-  comments: CommentCardDto[];
-}) {
+export function CommentAvaliationContainer({ comments }: { comments: CommentCardDto[] }) {
   return (
     <div className="space-y-3">
       {comments.map((comment) => (
