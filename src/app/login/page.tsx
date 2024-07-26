@@ -9,6 +9,7 @@ import google from '@/assets/icons/google.svg';
 import rocket from '@/assets/icons/rocket.svg';
 import login from '@/assets/login.svg';
 import { SocialLoginButton } from '@/components/buttons/social-login-btn';
+import { env } from '@/infra/env';
 
 export default function Login() {
   const router = useRouter();
@@ -33,7 +34,7 @@ export default function Login() {
               title="Entrar com o Google"
               fn={() =>
                 signIn('google', {
-                  callbackUrl: 'http://localhost:3000/dashboard',
+                  callbackUrl: env.NEXT_PUBLIC_LOGIN_REDIRECT_URL,
                 })
               }
             />
@@ -42,7 +43,7 @@ export default function Login() {
               title="Entrar com o Github"
               fn={() =>
                 signIn('github', {
-                  callbackUrl: 'http://localhost:3000/dashboard',
+                  callbackUrl: env.NEXT_PUBLIC_LOGIN_REDIRECT_URL,
                 })
               }
             />
