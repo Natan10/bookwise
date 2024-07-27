@@ -1,9 +1,10 @@
-import { ReactNode } from 'react';
 import { X } from '@phosphor-icons/react';
 import { signIn } from 'next-auth/react';
+import { ReactNode } from 'react';
 
 import github from '@/assets/icons/github.svg';
 import google from '@/assets/icons/google.svg';
+
 import { SocialLoginButton } from './buttons/social-login-btn';
 
 function Content({ close }: { close: () => void }) {

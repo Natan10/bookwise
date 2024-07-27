@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { pgTable, timestamp, serial, char, text, integer, primaryKey } from 'drizzle-orm/pg-core';
+import { char, integer, pgTable, primaryKey, serial, text, timestamp } from 'drizzle-orm/pg-core';
 
 export const categories = pgTable('categories', {
   id: serial('id').primaryKey(),

@@ -1,6 +1,8 @@
 import Image from 'next/image';
-import { Stars } from '../stars';
+
 import bannerBook from '@/assets/banner_book.svg';
+
+import { Stars } from '../stars';
 
 type ProfileCardProps = {
   coverImage: string | null;

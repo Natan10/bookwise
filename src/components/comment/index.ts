@@ -1,9 +1,9 @@
-export { CommentRoot } from './comment-root';
-export { CommentClose } from './comment-close';
-export { CommentBookCard } from './comment-book-card';
-export { CommentAvaliationTrigger } from './comment-avaliation-trigger';
-export { CommentAvaliationInput } from './comment-avaliation-input';
 export { CommentAvaliationCard } from './comment-avaliation-card';
+export { CommentAvaliationContainer } from './comment-avaliation-container';
+export { CommentAvaliationInput } from './comment-avaliation-input';
+export { CommentAvaliationTrigger } from './comment-avaliation-trigger';
+export { CommentBookCard } from './comment-book-card';
+export { CommentClose } from './comment-close';
+export { CommentRoot } from './comment-root';
 export { CommentLoadCard } from './load/comment-load-card';
 export { CommentLoadComment } from './load/comment-load-comment';
-export { CommentAvaliationContainer } from './comment-avaliation-container';

@@ -1,6 +1,6 @@
-import { ReactNode } from 'react';
-import Image from 'next/image';
 import { SignOut } from '@phosphor-icons/react';
+import Image from 'next/image';
+import { ReactNode } from 'react';
 
 function AvatarRoot({ children }: { children: ReactNode }) {
   return <div className="flex items-center gap-4">{children}</div>;
@@ -70,4 +70,4 @@ function AvatarIcon() {
   );
 }
 
-export { AvatarDescription, AvatarPhoto, AvatarRoot, AvatarIcon };
+export { AvatarDescription, AvatarIcon, AvatarPhoto, AvatarRoot };

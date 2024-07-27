@@ -1,5 +1,5 @@
-import * as schema from './schema';
 import { db } from './neon-client';
+import * as schema from './schema';
 
 const books = [
   {
@@ -168,7 +168,7 @@ async function seedDb() {
 }
 
 seedDb()
-  .then((x) => {
+  .then(() => {
     console.log('database seed complete.');
     return;
   })

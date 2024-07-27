@@ -1,9 +1,10 @@
-import Image from 'next/image';
 import { formatDistanceToNow } from 'date-fns';
+import Image from 'next/image';
 
-import { Stars } from '../stars';
 import { LastBookReadInfoDto } from '@/app/(dashboard)/dashboard/dtos/last-book-read-info-dto';
 import bannerBook from '@/assets/banner_book.svg';
+
+import { Stars } from '../stars';
 
 type BigBookCardProps = {
   data: LastBookReadInfoDto;

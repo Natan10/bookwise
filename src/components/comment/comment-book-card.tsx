@@ -1,8 +1,9 @@
+import { BookmarkSimple, BookOpen } from '@phosphor-icons/react';
 import Image from 'next/image';
-import { BookOpen, BookmarkSimple } from '@phosphor-icons/react';
+
+import bannerBook from '@/assets/banner_book.svg';
 
 import { Stars } from '../stars';
-import bannerBook from '@/assets/banner_book.svg';
 
 type CommentBookCardProps = {
   categories: string[];
