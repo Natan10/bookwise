@@ -7,7 +7,11 @@ const key = 'main-stats-avaliations';
 export function useGetAvaliations() {
   const { data, isLoading } = useQuery({
     queryKey: [key],
-    queryFn: async () => await getLatestAvaliations(),
+    queryFn: async () => {
+      const [data, err] = await getLatestAvaliations();
+      if (err) throw err;
+      return data;
+    },
     refetchOnWindowFocus: true,
     refetchOnReconnect: false,
     refetchOnMount: false,

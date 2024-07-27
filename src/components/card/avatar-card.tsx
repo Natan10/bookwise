@@ -1,10 +1,11 @@
-import Image from 'next/image';
 import { formatDistanceToNow } from 'date-fns';
+import Image from 'next/image';
 
-import { Stars } from '../stars';
-import * as Avatar from '@/components/avatar';
 import { LastAvaliationDto } from '@/app/(dashboard)/dashboard/dtos/last-avaliation-dto';
 import bannerBook from '@/assets/banner_book.svg';
+import * as Avatar from '@/components/avatar';
+
+import { Stars } from '../stars';
 
 type AvatarCardProps = {
   avaliation: LastAvaliationDto;

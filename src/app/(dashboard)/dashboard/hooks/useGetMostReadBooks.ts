@@ -8,8 +8,9 @@ export function useGetMostReadBooks() {
   const { data, isLoading } = useQuery({
     queryKey: [key],
     queryFn: async () => {
-      const response = await getPopularBooks();
-      return response;
+      const [data, err] = await getPopularBooks();
+      if (err) throw err;
+      return data;
     },
     refetchOnWindowFocus: true,
     refetchOnReconnect: false,
