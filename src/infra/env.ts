@@ -14,9 +14,7 @@ export const env = createEnv({
     NEXTAUTH_URL: z.string().url(),
     NEXTAUTH_SECRET: z.string(),
   },
-  client: {
-    NEXT_PUBLIC_LOGIN_REDIRECT_URL: z.string().url(),
-  },
+  client: {},
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
 
@@ -27,10 +25,6 @@ export const env = createEnv({
 
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
-
-    NEXT_PUBLIC_LOGIN_REDIRECT_URL: process.env.VERCEL
-      ? process.env.NEXT_PUBLIC_VERCEL_URL
-      : process.env.NEXT_PUBLIC_LOGIN_REDIRECT_URL,
   },
   emptyStringAsUndefined: true,
 });
