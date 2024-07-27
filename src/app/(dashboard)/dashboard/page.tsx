@@ -87,11 +87,13 @@ export default function Dashboard() {
                 latestAvaliations.map((avaliation) => (
                   <AvatarCard key={avaliation.id} avaliation={avaliation} />
                 ))
-              ) : (
+              ) : !isLoadingLatestAvaliations ? (
                 <div className="flex flex-col items-center justify-center gap-2">
                   <Image src={emptyBox} alt="emtpy-content" width={200} height={200} />
                   <span className="text-xs text-gray-500">Nenhuma avaliação disponível...</span>
                 </div>
+              ) : (
+                <></>
               )}
             </div>
           </div>

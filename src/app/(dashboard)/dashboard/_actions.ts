@@ -1,39 +1,44 @@
 'use server';
 
 import { avg, desc, eq, getTableColumns } from 'drizzle-orm';
+import { createServerAction } from 'zsa';
 
 import { LastAvaliationDto } from '@/app/(dashboard)/dashboard/dtos/last-avaliation-dto';
 import { LastBookReadInfoDto } from '@/app/(dashboard)/dashboard/dtos/last-book-read-info-dto';
 import { PopularBookDto } from '@/app/(dashboard)/dashboard/dtos/popular-book-dto';
+import { profileDataProcedure } from '@/app/procedures/profile-procedure';
 import { db } from '@/infra/database/neon-client';
 import { avaliations, books, profiles } from '@/infra/database/schema';
 
-export async function getLastBookRead({ email }: { email: string }) {
-  const profile = await db.query.profiles.findFirst({
-    where: eq(profiles.email, email),
+export const getLastBookRead = profileDataProcedure
+  .createServerAction()
+  .handler(async ({ ctx }) => {
+    const { email } = ctx;
+    const profile = await db.query.profiles.findFirst({
+      where: eq(profiles.email, email),
+    });
+
+    if (!profile) throw new Error('Profile does not exist');
+
+    const [content] = await db
+      .select({
+        rate: avaliations.rate,
+        comment: avaliations.comment,
+        createdAt: avaliations.createdAt,
+        title: books.title,
+        author: books.author,
+        coverImage: books.coverImage,
+      })
+      .from(avaliations)
+      .innerJoin(books, eq(books.id, avaliations.bookId))
+      .where(eq(avaliations.profileId, profile.id))
+      .orderBy(desc(books.id))
+      .limit(1);
+
+    return content satisfies LastBookReadInfoDto;
   });
 
-  if (!profile) throw new Error('Profile does not exist');
-
-  const [content] = await db
-    .select({
-      rate: avaliations.rate,
-      comment: avaliations.comment,
-      createdAt: avaliations.createdAt,
-      title: books.title,
-      author: books.author,
-      coverImage: books.coverImage,
-    })
-    .from(avaliations)
-    .innerJoin(books, eq(books.id, avaliations.bookId))
-    .where(eq(avaliations.profileId, profile.id))
-    .orderBy(desc(books.id))
-    .limit(1);
-
-  return content satisfies LastBookReadInfoDto;
-}
-
-export async function getLatestAvaliations() {
+export const getLatestAvaliations = createServerAction().handler(async () => {
   const latestAvaliations = await db
     .select({
       ...getTableColumns(avaliations),
@@ -51,9 +56,9 @@ export async function getLatestAvaliations() {
     .limit(5);
 
   return latestAvaliations as LastAvaliationDto[];
-}
+});
 
-export async function getPopularBooks() {
+export const getPopularBooks = createServerAction().handler(async () => {
   const info = await db
     .select({
       averageMedia: avg(avaliations.rate),
@@ -84,4 +89,4 @@ export async function getPopularBooks() {
   }
 
   return info as PopularBookDto[];
-}
+});

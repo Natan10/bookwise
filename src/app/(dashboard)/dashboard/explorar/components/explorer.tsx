@@ -31,8 +31,9 @@ export function Explorer({ categories }: ExplorerProps) {
   const { data: books, isLoading } = useQuery({
     queryKey: ['books_by_category', categoryType],
     queryFn: async () => {
-      const books = await getBooksByCategory(categoryType);
-      return books;
+      const [data, err] = await getBooksByCategory({ categoryType });
+      if (err) throw err;
+      return data;
     },
   });
 

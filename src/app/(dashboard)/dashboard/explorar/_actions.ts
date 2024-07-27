@@ -1,6 +1,8 @@
 'use server';
 
 import { and, avg, eq, getTableColumns, sql } from 'drizzle-orm';
+import { z } from 'zod';
+import { createServerAction } from 'zsa';
 
 import { db } from '@/infra/database/neon-client';
 import {
@@ -14,148 +16,161 @@ import {
 import { BookInfoDto } from './dtos/book-info-dto';
 import { BookWithRateDto } from './dtos/book-rate-dto';
 
-export async function getBooksByCategory(categoryType: string | null) {
-  let categoryId: number | null = null;
-
-  if (categoryType) {
-    const category = await db.query.categories.findFirst({
-      where: eq(categories.type, categoryType),
-    });
-    if (!category) throw new Error('Category not found');
-    categoryId = category.id;
-  }
-
-  const query: any = db
-    .select({
-      ...getTableColumns(books),
-      rate: avg(avaliations.rate),
-    })
-    .from(books)
-    .leftJoin(categories_to_books, eq(books.id, categories_to_books.bookId))
-    .leftJoin(avaliations, eq(avaliations.bookId, books.id))
-    .groupBy(books.id);
-
-  if (categoryId) {
-    query.where(eq(categories_to_books.categoryId, categoryId));
-  }
-
-  const data = await query;
-  return data.map((book: any) => {
-    return {
-      id: book.id,
-      author: book.author,
-      coverImage: book.coverImage,
-      description: book.description,
-      numOfPages: book.numOfPages,
-      title: book.title,
-      createdAt: book.createdAt,
-      updatedAt: book.updatedAt,
-      rate: +book.rate,
-    } as BookWithRateDto;
-  });
-}
-
-export async function getBookById(bookId: number) {
-  const book = await db.query.books.findFirst({
-    where: (books, { eq }) => eq(books.id, bookId),
-    with: {
-      avaliations: {
-        orderBy: (avaliations, { desc }) => [desc(avaliations.createdAt)],
-        with: {
-          profile: true,
-        },
-      },
-      categories: true,
-    },
-  });
-
-  if (!book) throw new Error('Book not found');
-
-  const categoryTypes = await Promise.all(
-    book.categories.map(async (e) => {
-      const category = await db.query.categories.findFirst({
-        where: (categories, { eq }) => eq(categories.id, e.categoryId),
-      });
-      if (category) return category.type;
-      return '';
+export const getBooksByCategory = createServerAction()
+  .input(
+    z.object({
+      categoryType: z.string().nullable(),
     }),
-  );
+  )
+  .handler(async ({ input }) => {
+    const { categoryType } = input;
 
-  const [bookAverage] = await db
-    .select({ averageRate: sql`avg(${avaliations.rate})` })
-    .from(avaliations)
-    .where(eq(avaliations.bookId, book.id));
-  const average = bookAverage.averageRate ? (bookAverage.averageRate as number) : 0;
+    let categoryId: number | null = null;
 
-  const data: BookInfoDto = {
-    ...book,
-    avaliations: book.avaliations,
-    categories: categoryTypes,
-    average,
-  };
-  return data;
-}
-
-export async function addComment({
-  profile,
-  bookId,
-  comment,
-  rate,
-}: {
-  bookId: number;
-  profile: {
-    email: string;
-    username?: string;
-    avatar?: string;
-  } | null;
-  comment: string;
-  rate: number;
-}) {
-  await db.transaction(async (tx) => {
-    if (!profile) {
-      throw new Error('User not exist');
+    if (categoryType) {
+      const category = await db.query.categories.findFirst({
+        where: eq(categories.type, categoryType),
+      });
+      if (!category) throw new Error('Category not found');
+      categoryId = category.id;
     }
 
-    // check profile
-    let record = await tx.query.profiles.findFirst({
-      where: eq(profiles.email, profile.email),
-    });
+    const query: any = db
+      .select({
+        ...getTableColumns(books),
+        rate: avg(avaliations.rate),
+      })
+      .from(books)
+      .leftJoin(categories_to_books, eq(books.id, categories_to_books.bookId))
+      .leftJoin(avaliations, eq(avaliations.bookId, books.id))
+      .groupBy(books.id);
 
-    if (!record) {
-      [record] = await tx
-        .insert(profiles)
-        .values({
-          email: profile.email,
-          avatar: profile.avatar,
-          username: profile.username,
-        })
-        .returning();
+    if (categoryId) {
+      query.where(eq(categories_to_books.categoryId, categoryId));
     }
 
-    // check book
-    const book = await tx.query.books.findFirst({
+    const data = await query;
+    return data.map((book: any) => {
+      return {
+        id: book.id,
+        author: book.author,
+        coverImage: book.coverImage,
+        description: book.description,
+        numOfPages: book.numOfPages,
+        title: book.title,
+        createdAt: book.createdAt,
+        updatedAt: book.updatedAt,
+        rate: +book.rate,
+      } as BookWithRateDto;
+    }) as BookWithRateDto[];
+  });
+
+export const getBookById = createServerAction()
+  .input(z.object({ bookId: z.number() }))
+  .handler(async ({ input }) => {
+    const { bookId } = input;
+
+    const book = await db.query.books.findFirst({
       where: (books, { eq }) => eq(books.id, bookId),
+      with: {
+        avaliations: {
+          orderBy: (avaliations, { desc }) => [desc(avaliations.createdAt)],
+          with: {
+            profile: true,
+          },
+        },
+        categories: true,
+      },
     });
 
     if (!book) throw new Error('Book not found');
-    if (rate < 0) throw new Error('Rate not allowed');
-    if (!comment) throw new Error('Comment not allowed');
 
-    const avaliationComment = await tx.query.avaliations.findFirst({
-      where: (avaliations, { eq }) => eq(avaliations.profileId, record.id),
-    });
+    const categoryTypes = await Promise.all(
+      book.categories.map(async (e) => {
+        const category = await db.query.categories.findFirst({
+          where: (categories, { eq }) => eq(categories.id, e.categoryId),
+        });
+        if (category) return category.type;
+        return '';
+      }),
+    );
 
-    if (avaliationComment) {
-      await tx
-        .delete(avaliations)
-        .where(and(eq(avaliations.bookId, book.id), eq(avaliations.profileId, record.id)));
-    }
+    const [bookAverage] = await db
+      .select({ averageRate: sql`avg(${avaliations.rate})` })
+      .from(avaliations)
+      .where(eq(avaliations.bookId, book.id));
+    const average = bookAverage.averageRate ? (bookAverage.averageRate as number) : 0;
 
-    await tx.insert(avaliations).values({
-      bookId: book.id,
-      comment: comment,
-      rate: rate,
-      profileId: record.id,
+    const data: BookInfoDto = {
+      ...book,
+      avaliations: book.avaliations,
+      categories: categoryTypes,
+      average,
+    };
+    return data;
+  });
+
+export const addComment = createServerAction()
+  .input(
+    z.object({
+      profile: z.object({
+        email: z.string().email(),
+        username: z.string().optional(),
+        avatar: z.string().optional(),
+      }),
+      bookId: z.number(),
+      comment: z.string(),
+      rate: z.number(),
+    }),
+  )
+  .handler(async ({ input }) => {
+    const { profile, bookId, comment, rate } = input;
+
+    await db.transaction(async (tx) => {
+      if (!profile) {
+        throw new Error('User not exist');
+      }
+
+      // check profile
+      let record = await tx.query.profiles.findFirst({
+        where: eq(profiles.email, profile.email),
+      });
+
+      if (!record) {
+        [record] = await tx
+          .insert(profiles)
+          .values({
+            email: profile.email,
+            avatar: profile.avatar,
+            username: profile.username,
+          })
+          .returning();
+      }
+
+      // check book
+      const book = await tx.query.books.findFirst({
+        where: (books, { eq }) => eq(books.id, bookId),
+      });
+
+      if (!book) throw new Error('Book not found');
+      if (rate < 0) throw new Error('Rate not allowed');
+      if (!comment) throw new Error('Comment not allowed');
+
+      const avaliationComment = await tx.query.avaliations.findFirst({
+        where: (avaliations, { eq }) => eq(avaliations.profileId, record.id),
+      });
+
+      if (avaliationComment) {
+        await tx
+          .delete(avaliations)
+          .where(and(eq(avaliations.bookId, book.id), eq(avaliations.profileId, record.id)));
+      }
+
+      await tx.insert(avaliations).values({
+        bookId: book.id,
+        comment: comment,
+        rate: rate,
+        profileId: record.id,
+      });
     });
   });
-}

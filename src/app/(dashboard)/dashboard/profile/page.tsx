@@ -3,7 +3,6 @@
 import { User } from '@phosphor-icons/react';
 import { formatDistanceToNow } from 'date-fns';
 import Image from 'next/image';
-import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 
 import emptyBox from '@/assets/empty-box.png';
@@ -16,8 +15,7 @@ import { AvaliationBookProfileDto } from './dtos/avaliation-book-profile-dto';
 import { useGetProfileBooks } from './hooks/useGetProfileBooks';
 
 export default function Profile() {
-  const { data: session } = useSession();
-  const { data, isLoading } = useGetProfileBooks({ session });
+  const { data, isLoading } = useGetProfileBooks();
   const [searchBookTerm, setSearchBookTerm] = useState('');
 
   const filterBooks = data?.filter((book: AvaliationBookProfileDto) => {

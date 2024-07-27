@@ -1,9 +1,9 @@
 import { Check, CircleNotch, X } from '@phosphor-icons/react';
+import { useSession } from 'next-auth/react';
 import { FormEvent, useState } from 'react';
 
 import * as Avatar from '../avatar';
 import { CommentRateInput } from './comment-rate-input';
-import { useSession } from 'next-auth/react';
 
 export function CommentAvaliationInput({
   onSendComment,

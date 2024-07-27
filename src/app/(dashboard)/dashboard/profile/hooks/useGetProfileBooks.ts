@@ -1,14 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
-import { Session } from 'next-auth';
+import { useSession } from 'next-auth/react';
 
 import { getProfileBooks } from '../_actions';
 
-export function useGetProfileBooks({ session }: { session: Session | null }) {
+export function useGetProfileBooks() {
+  const { data: session } = useSession();
   const { data, isLoading } = useQuery({
     queryKey: ['profile-books', session?.user?.email],
     queryFn: async () => {
-      if (!session || !session.user) return null;
-      const data = await getProfileBooks({ email: session.user.email! });
+      const [data, err] = await getProfileBooks();
+      if (err) throw err;
       return data;
     },
     enabled: !!session?.user,

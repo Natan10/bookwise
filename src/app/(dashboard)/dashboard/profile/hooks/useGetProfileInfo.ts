@@ -7,8 +7,8 @@ export function useGetProfileInfo({ session }: { session: Session | null }) {
   const { data } = useQuery({
     queryKey: ['profile-info', session?.user?.email],
     queryFn: async () => {
-      if (!session || !session.user) return null;
-      const data = await getProfileInfoStats({ email: session.user.email! });
+      const [data, err] = await getProfileInfoStats();
+      if (err) throw err;
       return data;
     },
   });

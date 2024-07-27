@@ -1,12 +1,13 @@
-import { useState } from 'react';
-import toast from 'react-hot-toast';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
 
-import * as Components from './index';
 import { addComment, getBookById } from '@/app/(dashboard)/dashboard/explorar/_actions';
-import { CommentCardDto } from './dtos/comment-card-dto';
+
 import { Modal } from '../modal';
+import { CommentCardDto } from './dtos/comment-card-dto';
+import * as Components from './index';
 
 export function CommentSection({ bookId, close }: { bookId: number | null; close: () => void }) {
   const [shouldShowLoginModal, setShouldShowLoginModal] = useState(false);
@@ -18,7 +19,8 @@ export function CommentSection({ bookId, close }: { bookId: number | null; close
     queryKey: ['book_informations', bookId],
     queryFn: async () => {
       if (!bookId) return null;
-      const book = await getBookById(bookId);
+      const [book, err] = await getBookById({ bookId });
+      if (err) throw err;
       return book;
     },
     enabled: !!bookId,
@@ -46,19 +48,20 @@ export function CommentSection({ bookId, close }: { bookId: number | null; close
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async ({ comment, rate }: { comment: string; rate: number }) => {
+      if (!session || !session.user) return;
       if (!bookId) return null;
-      await addComment({
+      const [, err] = await addComment({
         bookId: bookId,
         comment,
         rate,
-        profile: session
-          ? {
-              email: session.user?.email!,
-              avatar: session.user?.image || undefined,
-              username: session.user?.name || undefined,
-            }
-          : null,
+        profile: {
+          email: session.user.email!,
+          avatar: session.user.image || undefined,
+          username: session.user.name || undefined,
+        },
       });
+
+      if (err) throw err;
     },
     onError: (e) => toast.error(e.message),
     onSuccess: async () => {

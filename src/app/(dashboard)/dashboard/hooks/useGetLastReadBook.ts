@@ -13,13 +13,12 @@ export function useGetLastReadBook({ session }: UseGetLastReadBookProps) {
   const { data, isLoading } = useQuery({
     queryKey: [key, session?.user?.email],
     queryFn: async () => {
-      if (!session || !session.user) return null;
-      // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-      const data = await getLastBookRead({ email: session?.user.email! });
+      const [data, err] = await getLastBookRead();
+      if (err) throw err;
       return data;
     },
     enabled: !!session,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     refetchOnReconnect: false,
     refetchOnMount: false,
     retry: false,

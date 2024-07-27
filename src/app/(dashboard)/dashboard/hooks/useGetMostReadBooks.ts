@@ -11,7 +11,7 @@ export function useGetMostReadBooks() {
       const response = await getPopularBooks();
       return response;
     },
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     refetchOnReconnect: false,
     refetchOnMount: false,
     retry: false,
