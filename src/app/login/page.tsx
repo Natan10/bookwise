@@ -34,7 +34,7 @@ export default function Login() {
               title="Entrar com o Google"
               fn={() =>
                 signIn('google', {
-                  callbackUrl: env.NEXT_PUBLIC_LOGIN_REDIRECT_URL,
+                  callbackUrl: `${env.NEXT_PUBLIC_LOGIN_REDIRECT_URL}/dashboard`,
                 })
               }
             />
@@ -43,7 +43,7 @@ export default function Login() {
               title="Entrar com o Github"
               fn={() =>
                 signIn('github', {
-                  callbackUrl: env.NEXT_PUBLIC_LOGIN_REDIRECT_URL,
+                  callbackUrl: `${env.NEXT_PUBLIC_LOGIN_REDIRECT_URL}/dashboard`,
                 })
               }
             />
